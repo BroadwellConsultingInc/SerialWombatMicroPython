@@ -25,3 +25,13 @@ class SerialWombatChip_mp_i2c(SerialWombat.SerialWombatChip):
         except OSError:
             return -48,bytes("E00048UU",'utf-8')
 
+    def sendPacketHardware (self,tx):
+        try:
+            if (isinstance(tx,list)):
+                tx = bytearray(tx);
+            
+            self.i2c.writeto(self.address,tx)
+            return 8,bytes("E00048UU",'utf-8')  
+        except OSError:
+            return -48,bytes("E00048UU",'utf-8')
+

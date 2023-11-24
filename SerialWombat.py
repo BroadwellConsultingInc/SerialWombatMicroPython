@@ -281,12 +281,14 @@ class SerialWombatChip:
         self.deviceRevision = 0
         #Incremented every time a communication or command error is detected.  
         self.errorCount = 0
+		self.inBoot = False
         self.lastErrorCode = 0
         self.model = [0,0,0,0]
         self.fwVersion = [0,0,0,0]
         #! @brief The I2C address of the SerialWombatChip instance
         self.address = 0
         self.sendReadyTime = 0
+        self.uniqueIdentifier = bytearray(16)
 
     def configureDigitalPin(self,pin, highLow):
         tx = [200,pin,0,0,0,0,0,0x55]
@@ -443,7 +445,7 @@ class SerialWombatChip:
         if (reset):
             self.hardwareReset();
             self._sendReadyTime = millis() + 1000
-            time.sleep(1)
+            delay(1000)
             self.initialize()
             return 1
         else:
@@ -460,7 +462,7 @@ class SerialWombatChip:
 	is returned.
     """
     def readVersion(self):
-        count,rx=self.sendPacket( (bytearray("V       ",'utf8')))
+        count,rx=self.sendPacket( (bytearray("VUUUUUUU",'utf8')))
         if (count >= 0):
             self.version = rx[1:8]
             self.model = rx[1:4]
@@ -496,7 +498,7 @@ class SerialWombatChip:
 	@param value The 16 bit value to write
     """
     def writePublicData(self,pin, value):
-        tx = [0x82, pin, value & 0xFF, int(value / 256), 255, 0x55,0x55,0x55]
+        tx = [0x82, pin, value & 0xFF, value // 256, 255, 0x55,0x55,0x55]
         count,rx = self.sendPacket(tx)
         return (rx[2] + rx[3] * 256)
 
@@ -511,9 +513,12 @@ class SerialWombatChip:
     """
     def readSupplyVoltage_mV(self):
         #TODO add support for SW18AB
+		if (self.isSW18()):
+			self._supplyVoltagemV = readPublicData(SerialWombatDataSource::SW_DATA_SOURCE_VCC_mVOLTS);
+			return(self._supplyVoltagemV)
         counts = self.readPublicData(66)
         if (counts > 0):
-            mv = 1024 * 65536 / counts
+            mv = 1024 * 65536 // counts
             self._supplyVoltagemV = mv
         else:
             self._supplyVoltagemV = 0
@@ -551,7 +556,7 @@ class SerialWombatChip:
 	should wait 500mS before sending additional commands.
     """
     def hardwareReset(self):
-       self.sendPacket((bytearray("ReSeT!#*",'utf8')))#, encoding = 'utf8')))
+       self.sendPacketToHardware((bytearray("ReSeT!#*",'utf8')))#, encoding = 'utf8')))
 
     """!
 	\brief Set a pin to INPUT or OUTPUT, with options for pull Ups and open Drain settings
@@ -649,7 +654,7 @@ class SerialWombatChip:
             self.fwVersion[2] = rx[7]
             self.fwVersion[3] = 0
 
-            inBoot = (rx[1] == ord('B'))
+            self.inBoot = (rx[1] == ord('B'))
             return (True)
         
         return (False)
@@ -787,7 +792,7 @@ class SerialWombatChip:
 
     #! \brief Returns true if the instance received a model number corresponding to the Serial Wombat 18 series of chips at begin
     def isSW18(self):
-        return ( self.model[1] == '1' and self.model[2] == '8')
+        return ( self.model[1] == 0x31 and self.model[2] == 0x38)
 
     #! \brief Erases a page in flash.  Intended for use with the Bootloader, not by end users outside of bootloading sketch
     def eraseFlashPage(self, address):

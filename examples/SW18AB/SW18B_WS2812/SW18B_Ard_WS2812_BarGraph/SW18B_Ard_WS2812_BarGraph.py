@@ -1,25 +1,48 @@
-import sys
-import os
 
-swPath = os.getcwd()
-for i in range(4):
-   swPath = os.path.dirname(swPath)
-
-sys.path.append(swPath)   # Add the directory with SerialWombat.py to the path for import
-
-import serial
 import SerialWombat
-import SerialWombatUART
 import SerialWombatWS2812
 import SerialWombatAnalogInput
 from ArduinoFunctions import delay
+
+#Comment these lines in if you're connecting directly to a Serial Wombat Chip's UART through cPython serial Module
+#Change the paramter of SerialWombatChip_cpy_serial to match the name of your Serial port
+#import SerialWombat_cpy_serial
+#sw = SerialWombat_cpy_serial.SerialWombatChip_cpy_serial("COM25")
+
+
+#Comment these lines in if you're connecting to a Serial Wombat Chip's I2C port using Micropython's I2C interface
+#Change the values for sclPin, sdaPin, and swI2Caddress to match your configuration
+#import machine
+#import SerialWombat_mp_i2c
+#sclPin = 22
+#sdaPin = 21
+#swI2Caddress = 0x6B
+#i2c = machine.I2C(0,
+#            scl=machine.Pin(sclPin),
+#            sda=machine.Pin(sdaPin),
+#            freq=100000,timeout = 50000)
+#sw = SerialWombat_mp_i2c.SerialWombatChip_mp_i2c(i2c,swI2Caddress)
+#sw.address = 0x6B
+
+#Comment these lines in if you're connecting to a Serial Wombat Chip's UART port using Micropython's UART interface
+#Change the values for UARTnum, txPin, and rxPin to match your configuration
+import machine
+import SerialWombat_mp_UART
+txPin = 12
+rxPin = 14
+UARTnum = 2
+uart = machine.UART(UARTnum, baudrate=115200, tx=txPin, rx=rxPin)
+sw = SerialWombat_mp_UART.SerialWombatChipUART(uart)
+
+
+
+#Interface independent code starts here:
 
 WS2812_PIN =  15  # Must be an enhanced performance pin: 0,1,2,3,4,7,9,10-19
 NUMBER_OF_LEDS =  16
 WS2812_USER_BUFFER_INDEX =  0x0000  # Set this to an index into the on-chip user buffer.  Can't overlap with area used by other pins.
 
-ser = serial.Serial("COM19",115200,timeout = 0)
-sw = SerialWombatUART.SerialWombatChipUART(ser)
+
 ws2812 = SerialWombatWS2812.SerialWombatWS2812(sw)
 pot = SerialWombatAnalogInput.SerialWombatAnalogInput(sw)
 
@@ -28,9 +51,9 @@ pot = SerialWombatAnalogInput.SerialWombatAnalogInput(sw)
 
 
 #Config:  What data source?  Comment in one
-#DATA_SOURCE  = SerialWombat.SerialWombatDataSource.SW_DATA_SOURCE_PIN_0
-DATA_SOURCE  = SerialWombat.SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_LSW # Increments every 1ms
-# DATA_SOURCE = SerialWombat.SerialWombatDataSource.SW_DATA_SOURCE_TEMPERATURE
+#DATA_SOURCE  = 0 #SerialWombat.SerialWombatDataSource.SW_DATA_SOURCE_PIN_0
+DATA_SOURCE  = 67# SerialWombat.SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_LSW # Increments every 1ms
+# DATA_SOURCE = 70 # SerialWombat.SerialWombatDataSource.SW_DATA_SOURCE_TEMPERATURE
 
 
 def setup():

@@ -12,23 +12,43 @@ https://broadwellconsultinginc.github.io/SerialWombatArdLib/class_serial_wombat_
 
 """
 
-import sys
-import os
-
-swPath = os.getcwd()
-for i in range(4):
-   swPath = os.path.dirname(swPath)
-
-sys.path.append(swPath)   # Add the directory with SerialWombat.py to the path for import
-
-import serial
-import SerialWombatUART
+import SerialWombat
 import SerialWombatWS2812
 from ArduinoFunctions import delay
 
+#Comment these lines in if you're connecting directly to a Serial Wombat Chip's UART through cPython serial Module
+#Change the paramter of SerialWombatChip_cpy_serial to match the name of your Serial port
+#import SerialWombat_cpy_serial
+#sw = SerialWombat_cpy_serial.SerialWombatChip_cpy_serial("COM25")
 
-ser = serial.Serial("COM19",115200,timeout = 0)
-sw = SerialWombatUART.SerialWombatChipUART(ser)
+
+#Comment these lines in if you're connecting to a Serial Wombat Chip's I2C port using Micropython's I2C interface
+#Change the values for sclPin, sdaPin, and swI2Caddress to match your configuration
+#import machine
+#import SerialWombat_mp_i2c
+#sclPin = 22
+#sdaPin = 21
+#swI2Caddress = 0x6B
+#i2c = machine.I2C(0,
+#            scl=machine.Pin(sclPin),
+#            sda=machine.Pin(sdaPin),
+#            freq=100000,timeout = 50000)
+#sw = SerialWombat_mp_i2c.SerialWombatChip_mp_i2c(i2c,swI2Caddress)
+#sw.address = 0x6B
+
+#Comment these lines in if you're connecting to a Serial Wombat Chip's UART port using Micropython's UART interface
+#Change the values for UARTnum, txPin, and rxPin to match your configuration
+import machine
+import SerialWombat_mp_UART
+txPin = 12
+rxPin = 14
+UARTnum = 2
+uart = machine.UART(UARTnum, baudrate=115200, tx=txPin, rx=rxPin)
+sw = SerialWombat_mp_UART.SerialWombatChipUART(uart)
+
+
+#Interface independent code starts here:
+
 ws2812 = SerialWombatWS2812.SerialWombatWS2812(sw)
 ws2812_2 = SerialWombatWS2812.SerialWombatWS2812(sw)
 
@@ -81,10 +101,10 @@ def setup():
     
   ws2812.writeAnimationFrameDelay(1,1000);#Make the yellow frame (index 1 )  only 1000 mS instead of 5000.
 
-  ws2812.writeMode(SerialWombatWS2812.SWWS2812Mode.ws2812ModeAnimation)
+  ws2812.writeMode(1) #SerialWombatWS2812.SWWS2812Mode.ws2812ModeAnimation)
 
   ws2812_2.begin(14,16,2000)
-  ws2812_2.writeMode(SerialWombatWS2812.SWWS2812Mode.ws2812ModeChase)
+  ws2812_2.writeMode(2) #SerialWombatWS2812.SWWS2812Mode.ws2812ModeChase)
 
 
 

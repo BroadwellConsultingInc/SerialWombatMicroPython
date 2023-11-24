@@ -8,9 +8,10 @@ class SerialWombatChipUART(SerialWombat.SerialWombatChip):
     ser  = 0
     def __init__(self,port):
         self.ser = port
+        SerialWombat.SerialWombatChip.__init__(self)
 
 
-    def sendPacket (self,tx):
+    def sendReceivePacketHardware (self,tx):
         if (isinstance(tx,list)):
             tx = bytearray(tx);
         clear = bytearray([0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55])
@@ -33,4 +34,19 @@ class SerialWombatChipUART(SerialWombat.SerialWombatChip):
             time.sleep(.002)
             delaycount +=1
         return 8,rx  #TODO add error check, size check
+		
+    def sendPacketToHardware (self,tx):
+        if (isinstance(tx,list)):
+            tx = bytearray(tx);
+        clear = bytearray([0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55])
+        self.ser.write(clear)
+        self.ser.flush()
+
+        rx = self.ser.read(8) 
+        while (rx != None):
+            rx = self.ser.read(1)
+        self.ser.write(tx)
+        return 8,bytes("E00048UU",'utf-8')  
+
+	
 
