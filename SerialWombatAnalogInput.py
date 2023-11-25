@@ -34,11 +34,11 @@ from SerialWombat import SW_LE16
 """
 
 class AnalogInputPublicDataOutput():
-	AnalogInputPublicDataOutput_Raw = 0,  # The raw A/D reading is displayed as public data (default)
-	AnalogInputPublicDataOutput_Filtered = 1,	# The Filtered A/D reading is displayed as public data (default)
-	AnalogInputPublicDataOutput_Averaged = 2,	# The Averaged A/D reading is displayed as public data (default)
-	AnalogInputPublicDataOutput_Minimum = 3,	# The Minimum A/D reading is displayed as public data (default)
-	AnalogInputPublicDataOutput_Maximum = 4,	# The Maximum A/D reading is displayed as public data (default)
+	AnalogInputPublicDataOutput_Raw = 0  # The raw A/D reading is displayed as public data (default)
+	AnalogInputPublicDataOutput_Filtered = 1	# The Filtered A/D reading is displayed as public data (default)
+	AnalogInputPublicDataOutput_Averaged = 2	# The Averaged A/D reading is displayed as public data (default)
+	AnalogInputPublicDataOutput_Minimum = 3	# The Minimum A/D reading is displayed as public data (default)
+	AnalogInputPublicDataOutput_Maximum = 4	# The Maximum A/D reading is displayed as public data (default)
 
 
 """!
