@@ -474,9 +474,9 @@ class SerialWombatChip:
 	This queries the Serial Wombat chip for its version information, and returns the
 	firmware version as a uint32 0x0XYZ where X,Y,and Z represent firmwre version X.Y.Z
         """
-        def readVersion_uint32(self) :
-            self.readVersion()
-            return (((self.fwVersion[0]) << 16) |((self.fwVersion[1]) << 8) |	self.fwVersion[2])
+    def readVersion_uint32(self) :
+        self.readVersion()
+        return (((self.fwVersion[0]) << 16) |((self.fwVersion[1]) << 8) |	self.fwVersion[2])
 
     """!
 	\brief Read the 16 Bit public data associated with a Serial Wombat Pin Mode 
