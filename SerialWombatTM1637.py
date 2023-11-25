@@ -26,15 +26,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 import SerialWombat
 from SerialWombatPin import SerialWombatPin
 from SerialWombat import SW_LE16
-from enum import IntEnum
+#from enum import IntEnum
 
 
-class SWTM1637Mode (IntEnum):
-	tm1637Decimal16 = 0,  #!< Get the number to display from a pin or data source and display in decimal
-	tm1637Hex16 = 1,	#!< Get the number to display from a pin or data source and display in hex
-	tm1637CharArray = 2, #!< Display a string sent by the host
-	tm1637RawArray = 3, #!<Display raw LED segments sent by the host
-	tm1637Animation = 4, #! < Display an animation loaded by the host and clocked out by the Serial Wombat chip
+#class SWTM1637Mode (IntEnum):
+#	tm1637Decimal16 = 0,  #!< Get the number to display from a pin or data source and display in decimal
+#	tm1637Hex16 = 1,	#!< Get the number to display from a pin or data source and display in hex
+#	tm1637CharArray = 2, #!< Display a string sent by the host
+#	tm1637RawArray = 3, #!<Display raw LED segments sent by the host
+#	tm1637Animation = 4, #! < Display an animation loaded by the host and clocked out by the Serial Wombat chip
 
 """!
 @brief A Class representing a TM1637 Seven-Segment Display connected to two Serial Wombat pins

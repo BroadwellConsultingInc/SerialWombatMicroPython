@@ -27,7 +27,6 @@ import SerialWombat
 from SerialWombatPin import SerialWombatPin
 from SerialWombat import SW_LE32
 from SerialWombat import SW_LE16
-from enum import IntEnum
 
 
 """!
@@ -106,7 +105,7 @@ class SerialWombat18CapTouch(SerialWombatPin):
 	"""
 	def begin(self,  pin, chargeTime, delay = 10):
 		self._pin = pin
-		self._pinMode = SerialWombat.SerialWombatPinMode_t.PIN_MODE_SW18AB_CAPTOUCH
+		self._pinMode = 22 #SerialWombat.SerialWombatPinMode_t.PIN_MODE_SW18AB_CAPTOUCH
 
 		tx = bytearray([ 200,self._pin, 22]) + SW_LE16(chargeTime) +  SW_LE16(delay) + bytearray([0x55 ])
 
