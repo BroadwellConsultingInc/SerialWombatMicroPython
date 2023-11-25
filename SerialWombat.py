@@ -38,13 +38,13 @@ def SW_LE16(i):
 def SW_LE32(i):
     return (bytearray([i & 0xFF, int(i>>8) & 0xFF, int(i>>16) & 0xFF, int(i>>24) & 0xFF]))
 
-"""
-class SerialWombatPinState_t (IntEnum):
+
+class SerialWombatPinState_t ():
 	SW_LOW = 0,
 	SW_HIGH = 1,
 	SW_INPUT = 2,
 
-class ArduinoInputOutput (IntEnum):
+class ArduinoInputOutput ():
     INPUT = 0,
     OUTPUT = 1,
     PULLUP = 2
@@ -52,7 +52,7 @@ class ArduinoInputOutput (IntEnum):
 
 
 #! \brief A list of Serial Wombat public data sources
-class SerialWombatDataSource(IntEnum):
+class SerialWombatDataSource():
     SW_DATA_SOURCE_PIN_0 = 0, #!< (0) 16 bit public data provided by Pin 0
     SW_DATA_SOURCE_PIN_1 = 1, #!< (1) 16 bit public data provided by Pin 1
     SW_DATA_SOURCE_PIN_2 = 2, #!< (2) 16 bit public data provided by Pin 2
@@ -169,7 +169,7 @@ class SerialWombatDataSource(IntEnum):
     SW_DATA_SOURCE_NONE = 255,#!< (255 ) Used to mean "No Source Selected"
 
 
-class SerialWombatCommands(IntEnum):
+class SerialWombatCommands():
 	CMD_ECHO =ord('!') #!< ('!')
 	CMD_READ_BUFFER_ASCII = ord('G')#!< ('G')
 	CMD_ASCII_SET_PIN =ord('P') #!< ('P')
@@ -220,7 +220,7 @@ class SerialWombatCommands(IntEnum):
 	CONFIGURE_CHANNEL_MODE_HW_2 = 222 #!< (222)
 	CONFIGURE_CHANNEL_MODE_HW_3 = 223 #!< (223)
 
-class SerialWombatPinMode_t(IntEnum):
+class SerialWombatPinMode_t():
 	PIN_MODE_DIGITALIO = 0 #!< (0)
 	PIN_MODE_CONTROLLED = 1 #!< (1)
 	PIN_MODE_ANALOGINPUT = 2 #!< (2)
@@ -251,7 +251,7 @@ class SerialWombatPinMode_t(IntEnum):
 	PIN_MODE_VGA = 31 #!<(31)
 	PIN_MODE_PS2KEYBOARD = 32 #!<(32)
 	PIN_MODE_UNKNOWN = 255 #!< (0xFF)
-"""
+
 
 """! \brief Class for a Serial Wombat chip.  Each Serial Wombat chip on a project should have its own instance.
 
@@ -281,7 +281,7 @@ class SerialWombatChip:
         self.deviceRevision = 0
         #Incremented every time a communication or command error is detected.  
         self.errorCount = 0
-		self.inBoot = False
+        self.inBoot = False
         self.lastErrorCode = 0
         self.model = [0,0,0,0]
         self.fwVersion = [0,0,0,0]
@@ -388,7 +388,7 @@ class SerialWombatChip:
             self.sendPacketHardware(txu)
         if (self.sendReadyTime != 0):
             currentTime = millis()
-            if (currentTime < sendReadyTime):
+            if (currentTime < self.sendReadyTime):
                 delay(self.sendReadyTime - currentTime)
 			
             self.sendReadyTime = 0
@@ -513,9 +513,9 @@ class SerialWombatChip:
     """
     def readSupplyVoltage_mV(self):
         #TODO add support for SW18AB
-		if (self.isSW18()):
-			self._supplyVoltagemV = readPublicData(SerialWombatDataSource::SW_DATA_SOURCE_VCC_mVOLTS);
-			return(self._supplyVoltagemV)
+        if (self.isSW18()):
+            self._supplyVoltagemV = self.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_VCC_mVOLTS);
+            return(self._supplyVoltagemV)
         counts = self.readPublicData(66)
         if (counts > 0):
             mv = 1024 * 65536 // counts
@@ -964,7 +964,7 @@ class SerialWombatChip:
     """
     def writeFrameTimerPin(self, pin):
         tx = [ 0xC8 ,pin,
-               21,# SerialWombatPinMode_t.PIN_MODE_FRAME_TIMER,
+               SerialWombatPinMode_t.PIN_MODE_FRAME_TIMER,
                0x55,0x55,0x55,0x55,0x55 ]
         result,rx = self.sendPacket(tx)
         return result

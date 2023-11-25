@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 """
 
 import SerialWombatPin
-#from SerialWombat import SerialWombatCommands
+from SerialWombat import SerialWombatCommands
 from SerialWombat import SW_LE16
 #from enum import IntEnum
 
@@ -96,7 +96,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
         self._pinMode = pin
         
     def writeTimeout(self, timeout_mS,  timeoutOutputValue):
-        tx = bytearray([ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
             self._pin,
             self._pinMode,
             1]) +			SW_LE16(timeout_mS) +			SW_LE16(timeoutOutputValue)
@@ -114,7 +114,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @param sourcePin  The pin or public data id that should be read to drive the output value.  Only used when enabled is set to true
     """
     def writeScalingEnabled(self, enabled,  sourcePin):
-        tx = [ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
         self._pin,	self._pinMode,
         0, #Enable/disable scaling, set source pin
         enabled,
@@ -138,7 +138,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @return returns 0 or higher if success, or a negative error code
     """
     def writeInputScaling(self, inputMin,  inputMax):
-        tx = bytearray([ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
             self._pin,
             self._pinMode,
             2])  + SW_LE16(inputMin) + SW_LE16(inputMax) # 2 = Set input scaling
@@ -160,7 +160,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @return returns 0 or higher if success, or a negative error code
     """
     def writeOutputScaling(self, outputMin,  outputMax):
-        tx = bytearray([ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
             self._pin,
             self._pinMode,
             5]) +	SW_LE16(outputMin) + SW_LE16(outputMax) # 5 = Set output scaling
@@ -174,7 +174,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @return returns 0 or higher if success, or a negative error code
     """
     def writeScalingInvertedInput(self, inverted):
-        tx = [210,# SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
             self._pin,
             self._pinMode,
             3,  # Set inverted/not inverted
@@ -197,7 +197,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @return returns 0 or higher if success, or a negative error code
     """
     def writeScalingTargetValue(self, target):
-        tx = bytearray([ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
             self._pin,
             self._pinMode,
             6])  +SW_LE16(target)  +bytearray([0x55,0x55]) #  6 = Set target value for PID controller
@@ -219,7 +219,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @return returns 0 or higher if success, or a negative error code
     """
     def writeRateControl(self, samplePeriod,  maximumChangecounts):
-        tx = bytearray([ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
             self._pin,
             self._pinMode,
             4, # Set filter mode
@@ -227,7 +227,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
         result,rx = self._asosw.sendPacket(tx)
         if (result < 0):
             return(result)
-        tx = [210,#  SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = [  SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
             self._pin,
             self._pinMode,
             7, # Set Sample Rate
@@ -251,7 +251,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @return returns 0 or higher if success, or a negative error code
     """
     def write1stOrderFiltering(self, sampleRate,  filterConstant):
-        tx = bytearray([ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
                 self._pin,
                 self._pinMode,
                     4, # Set filter mode
@@ -261,7 +261,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
         result,rx = self._asosw.sendPacket(tx)
         if (result < 0):
                 return(result)
-        tx = [210,# SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
             self._pin,
             self._pinMode,
             7, # Set Sample Rate
@@ -284,7 +284,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @return returns 0 or higher if success, or a negative error code
     """
     def writeHysteresis(self, lowLimit,  lowOutputValue,  highLimit,  highOutputValue,  initialOutputValue):
-        tx = bytearray([ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
                 self._pin,
                 self._pinMode,
                 50,]) # Set hysteresis high limit/output
@@ -295,7 +295,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
         if (result < 0):
             return(result)
 
-        tx = bytearray([210,# SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
                 self._pin,
                 self._pinMode,
                 51]) # Set hysteresis low limit/output
@@ -305,7 +305,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
         if (result < 0):
             return(result)
 
-        tx = bytearray([210,# SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
                 self._pin,
                 self._pinMode,
                 52] ) # Set hysteresis low limit/output
@@ -352,7 +352,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @return returns 0 or higher if success, or a negative error code
      """
     def writePID(self, kp,  ki,  kd, target,samplePeriod):
-        tx = bytearray([ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
                 self._pin,
                 self._pinMode,
                 100,]) # Set kp and ki
@@ -362,7 +362,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
         if (result < 0):
             return(result)
 
-        tx = bytearray( [ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = bytearray( [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
                 self._pin,
                 self._pinMode,
                 101])  # Set kd
@@ -374,7 +374,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
             return(result)
 
         self.writeScalingTargetValue(target)
-        tx = [ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
                 self._pin,
                 self._pinMode,
             7, # Set Sample Rate
@@ -385,7 +385,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
         if (result < 0):
             return(result)
 
-        tx = [ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
                 self._pin,
                 self._pinMode,
                 102, # Reset Integrator
@@ -407,7 +407,7 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
      @return Last 16 bit value output to hardware
     """
     def readLastOutputValue(self):
-        tx = [ 210,#SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
                 self._pin,
                 self._pinMode,
             9, # Read Last Value

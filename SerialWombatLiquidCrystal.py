@@ -61,6 +61,7 @@ A video Tutorial on this pin mode is available:
 
 """
 import SerialWombat
+from ArduinoFunctions import delay
 from SerialWombatPin import SerialWombatPin
 
 class SerialWombatLiquidCrystal(SerialWombatPin):
@@ -125,7 +126,7 @@ class SerialWombatLiquidCrystal(SerialWombatPin):
 	@return returns a number 0 or greater for success, negative numbers indicate an error occured.
 	"""
 	def clear(self,delayAfterClear = True):
-		result = command(0x01);  # Clear display
+		result = self.command(0x01);  # Clear display
 		if (delayAfterClear):
 			delay(2)
 		return result
@@ -142,7 +143,7 @@ class SerialWombatLiquidCrystal(SerialWombatPin):
 	@return returns a number 0 or greater for success, negative numbers indicate an error occured.
 	"""
 	def home(self,delayAfterHome = True):
-		result =  command(0x02);  # Home
+		result =  self.command(0x02);  # Home
 		if (delayAfterHome):
 			delay(2)
 		return result

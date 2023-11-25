@@ -26,7 +26,7 @@ import SerialWombat
 import SerialWombatPin
 import SerialWombatAbstractScaledOutput
 from SerialWombat import SW_LE16
-#from SerialWombat import SerialWombatPinMode_t
+from SerialWombat import SerialWombatPinMode_t
 
 """! @file SerialWombatServo.py
 """
@@ -94,7 +94,7 @@ class SerialWombatServo(SerialWombatPin.SerialWombatPin):
 	"""
 	def attach(self, pin, reverse):
 		self._pin = pin
-		self._pinMode = 3# SerialWombatPinMode_t.PIN_MODE_SERVO
+		self._pinMode = SerialWombatPinMode_t.PIN_MODE_SERVO
 		self._reverse = reverse
 		self.initializeServo()
 	
@@ -114,7 +114,7 @@ class SerialWombatServo(SerialWombatPin.SerialWombatPin):
 		self._min = min;
 		self._max = max;
 		self._reverse = reverse;
-		self._pinMode = 3 #TODO PIN_MODE_SERVO;
+		self._pinMode = SerialWombatPinMode_t.PIN_MODE_SERVO;
 		self.initializeServo();
 
 	"""!
@@ -187,7 +187,7 @@ class SerialWombatServo_18AB(SerialWombatServo, SerialWombatAbstractScaledOutput
 		self._asosw = serial_wombat
 	
 	def attach(self, pin, min=544, max=2400, reverse=False):
-		SerialWombatAbstractScaledOutput.SerialWombatAbstractScaledOutput.begin(self,pin,3)#SerialWombat.SerialWombatPinMode_t.PIN_MODE_SERVO
+		SerialWombatAbstractScaledOutput.SerialWombatAbstractScaledOutput.begin(self,pin,SerialWombat.SerialWombatPinMode_t.PIN_MODE_SERVO)
 		return super().attach(pin, min, max, reverse)
 		
 
@@ -259,14 +259,14 @@ class SerialWombatHighFrequencyServo(SerialWombatServo_18AB):
 		self._min = min
 		self._max = max
 		self._reverse = reverse
-		self._pinMode = 26#SerialWombat.SerialWombatPinMode_t.PIN_MODE_HS_SERVO
+		self._pinMode = SerialWombat.SerialWombatPinMode_t.PIN_MODE_HS_SERVO
 		self.initializeServo()
 
 	def writeFrequency_Hz(self, frequency_hZ):
 		return self.writePeriod_uS((1000000 // frequency_hZ));
 
 	def writePeriod_uS(self, period_uS):
-		tx = bytearray([ 203,_pin,_pinMode])
+		tx = bytearray([ 203,self._pin,self._pinMode])
 		tx += SW_LE16(period_uS)
 		tx += bytearray([0x55,0x55,0x55])
 		result,rx = self._sw.sendPacket(tx)

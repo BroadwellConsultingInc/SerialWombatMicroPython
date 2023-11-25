@@ -33,11 +33,11 @@ from SerialWombat import SW_LE16
 from ArduinoFunctions import millis
 from ArduinoFunctions import delay
 
-"""
-class SerialWombatQueueType(IntEnum):
-    QUEUE_TYPE_RAM_BYTE = 0,  #!< A queue that queues byte-sized data in a queue in the User RAM area
-    QUEUE_TYPE_RAM_BYTE_SHIFT = 1,  #!< A queue that queues byte-sized data in a queue in the User RAM area
-"""
+
+class SerialWombatQueueType():
+    QUEUE_TYPE_RAM_BYTE = 0  #!< A queue that queues byte-sized data in a queue in the User RAM area
+    QUEUE_TYPE_RAM_BYTE_SHIFT = 1  #!< A queue that queues byte-sized data in a queue in the User RAM area
+
 
 """!
  @brief A Class representing a Queue in the User Ram area on the Serial Wombat Chip

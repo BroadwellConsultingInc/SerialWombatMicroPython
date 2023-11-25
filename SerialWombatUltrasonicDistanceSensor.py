@@ -1,4 +1,5 @@
 import SerialWombatPin
+import SerialWombat
 
 class SerialWombatUltrasonicDistanceSensor (SerialWombatPin.SerialWombatPin):
 
@@ -7,7 +8,7 @@ class SerialWombatUltrasonicDistanceSensor (SerialWombatPin.SerialWombatPin):
 
     def begin(self,echoPin, driver, triggerPin, autoTrigger = True, pullUp = False):
         self._pin = echoPin
-        self._pinMode =  27 # Ultrasonic Distance
+        self._pinMode =  SerialWombat.SerialWombatPinMode_t.PIN_MODE_ULTRASONIC_DISTANCE
 
         tx = [200, self._pin, self._pinMode,driver, triggerPin, pullUp, autoTrigger, 0x55]
         self._sw.sendPacket(tx)

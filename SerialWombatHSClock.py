@@ -75,9 +75,9 @@ class SerialWombatHSClock(SerialWombatPin ):
 	def begin(self,pin, frequency_Hz):
 
 		self._pin = pin;
-		self._pinMode = 29#SerialWombat.SerialWombatPinMode_t.PIN_MODE_HS_CLOCK
+		self._pinMode = SerialWombat.SerialWombatPinMode_t.PIN_MODE_HS_CLOCK
 
-		tx = bytearray([ 200,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE0,
+		tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE0,
 		self._pin,
 		self._pinMode]) + SW_LE32(frequency_Hz) + bytearray([0x55])
 		result,rx = self._sw.sendPacket(tx)
@@ -92,7 +92,7 @@ class SerialWombatHSClock(SerialWombatPin ):
 	"""
 	def disable (self):
 		tx = [
-		219,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE_DISABLE,
+		SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE_DISABLE,
 		self._pin,
 		self._pinMode,
 		0x55,0x55,0x55,0x55,0x55]

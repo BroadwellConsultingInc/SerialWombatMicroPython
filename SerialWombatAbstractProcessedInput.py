@@ -125,7 +125,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 		if (inverted):
 			invertedInt = 1
 
-		tx = [ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			3,
@@ -157,7 +157,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	@return returns 0 or higher if success, or a negative error code
 	"""
 	def writeFirstOrderFilteringConstant(self, constant):
-		tx =bytearray( [ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx =bytearray( [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			11]) + SW_LE16(constant) + bytearray([0X55,0X55])
@@ -176,7 +176,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	@return returns 0 or higher if success, or a negative error code
 	"""
 	def writeAveragingNumberOfSamples(self, numberOfSamples):
-		tx = bytearray([ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			1]) + SW_LE16(numberOfSamples) + bytearray([ 0x55,0x55])
@@ -198,7 +198,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	@return returns 0 or higher if success, or a negative error code
 	"""
 	def writeExcludeBelowAbove(self, low,  high):
-		tx = bytearray([211,# SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			2]) + SW_LE16(low) + SW_LE16(high)
@@ -223,7 +223,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	@return returns 0 or higher if success, or a negative error code
 	"""
 	def configureQueue(self, queue, period,  queueHighByte = True,  queueLowByte = True):
-		tx = bytearray([211,# SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			5]) + SW_LE16(queue.startIndex) + bytearray([ period, ((( queueHighByte) << 1) | queueLowByte)])
@@ -236,7 +236,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	@param outputValue An enumerated type for filtered, averaged, or raw
 	"""
 	def configureOutputValue(self,outputValue):
-		tx = [211,# SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			4,
@@ -263,7 +263,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	@return returns 0 or higher if success, or a negative error code
 	"""
 	def writeTransformScaleRange(self, min,  max):
-		tx = bytearray([ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			6]) + SW_LE16(min)+ SW_LE16(max)
@@ -284,7 +284,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	@return returns 0 or higher if success, or a negative error code
 	"""
 	def writeTransformLinearMXB(self,m, b):
-		tx = bytearray([211,# SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			7]) + SW_LE32(m)
@@ -294,7 +294,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 		if (result < 0):
 			return(result)
 
-		tx2 = bytearray([ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx2 = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			8]) + SW_LE32(b)
@@ -307,7 +307,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	If disabled, the raw input value is placed directly in the self._pin's 16 bit public data buffer
 	"""
 	def writeProcessedInputEnable(self, enabled):
-		tx = [ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			0,
@@ -328,7 +328,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 		resetAfterReadInt = 0
 		if resetAfterRead:
 			resetAfterReadInt = 1
-		tx = [ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			9,
@@ -350,7 +350,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 		resetAfterReadInt = 0
 		if resetAfterRead:
 			resetAfterReadInt = 1
-		tx = [ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			10,
@@ -369,7 +369,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	a moving average, this value is unlikely to include the most recent raw samples.
 	"""
 	def readAverage(self):
-		tx = [ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			11,
@@ -385,7 +385,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 	@brief A 16 bit value representing the First Order IIR filtered result of the input
 	"""
 	def readFiltered(self):
-		tx = [ 211,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
 			self._pin,
 			self._swPinModeNumber,
 			11,

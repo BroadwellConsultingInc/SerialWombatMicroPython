@@ -26,7 +26,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 
 import SerialWombat
 from SerialWombatPin import SerialWombatPin
+from SerialWombat import SerialWombatPinMode_t
 from SerialWombat import SW_LE16
+from SerialWombat import SerialWombatCommands
 
 
 
@@ -86,7 +88,7 @@ class SerialWombatPulseOnChange( SerialWombatPin):
 	"""
 	def __init__(self,serial_wombat):
 		self._sw = serial_wombat
-		self._pinMode = 25 #PIN_MODE_PULSE_ON_CHANGE
+		self._pinMode = SerialWombatPinMode_t.PIN_MODE_PULSE_ON_CHANGE
 
 
 	"""!
@@ -102,7 +104,7 @@ class SerialWombatPulseOnChange( SerialWombatPin):
 	def begin(self, pin,  activeMode = 1,  inactiveMode = 0,  pulseOnTime = 50,  pulseOffTime = 50,  orNotAnd = 1,  PWMperiod = 0,  PWMdutyCycle = 0x8000):
 		self._pin = pin
 
-		tx = [200,# SerialWombatCommands::CONFIGURE_PIN_MODE0,
+		tx = [ SerialWombatCommands.CONFIGURE_PIN_MODE0,
 				self._pin,
 				self._pinMode,
 				activeMode,
@@ -113,13 +115,13 @@ class SerialWombatPulseOnChange( SerialWombatPin):
 		result,rx = self._sw.sendPacket(tx);
 		if (result < 0): 
 				return result
-		tx = bytearray([201,#  SerialWombatCommands::CONFIGURE_PIN_MODE1,
+		tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_MODE1,
 			self._pin,
 			self._pinMode]) + SW_LE16(pulseOnTime) + SW_LE16(pulseOffTime) + bytearray([ 0x55])
 		result,rx = self._sw.sendPacket(tx);
 		if (result < 0): 
 			return result
-		tx = bytearray([202, # SerialWombatCommands::CONFIGURE_PIN_MODE2,
+		tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_MODE2,
 			self._pin,
 			self._pinMode] ) + SW_LE16(PWMperiod)+ SW_LE16(PWMdutyCycle) + bytearray([ 0x55])
 		result,rx = self._sw.sendPacket(tx);
@@ -249,7 +251,7 @@ class SerialWombatPulseOnChange( SerialWombatPin):
 
 	def setEntryParams(self, entryID,  firstParam,  secondParam):
 		
-		tx = bytearray([203,# SerialWombatCommands::CONFIGURE_PIN_MODE3,
+		tx = bytearray([ SerialWombatCommands.CONFIGURE_PIN_MODE3,
 						self._pin,
 						self._pinMode,
 						entryID]) + SW_LE16(firstParam) + SW_LE16(secondParam)
@@ -259,7 +261,7 @@ class SerialWombatPulseOnChange( SerialWombatPin):
 		return 0
 
 	def setEntryMode(self, entryID,  pin,  mode):
-		tx = [ 204,#SerialWombatCommands::CONFIGURE_PIN_MODE4,
+		tx = [ SerialWombatCommands.CONFIGURE_PIN_MODE4,
 			self._pin,
 			self._pinMode,
 			entryID,

@@ -33,8 +33,8 @@ from SerialWombatPin import SerialWombatPin
 from SerialWombat import SW_LE32
 #from enum import IntEnum
 from SerialWombatAbstractScaledOutput import SerialWombatAbstractScaledOutput
-"""
-class Wombat4A_B_PWMFrequencyValues_t(IntEnum):
+
+class Wombat4A_B_PWMFrequencyValues_t():
     SW4AB_PWMFrequency_1_Hz = 0x76
     SW4AB_PWMFrequency_2_Hz = 0x66
     SW4AB_PWMFrequency_4_Hz = 0x56
@@ -51,7 +51,7 @@ class Wombat4A_B_PWMFrequencyValues_t(IntEnum):
     SW4AB_PWMFrequency_7800_Hz = 0x21
     SW4AB_PWMFrequency_15625_Hz = 0x11
     SW4AB_PWMFrequency_31250_Hz = 0x01
-"""
+
 
 """!
 @brief A class representing a Serial Wombat PWM output
@@ -91,7 +91,7 @@ class SerialWombatPWM(SerialWombatPin):
     """
     def begin(self,pin, dutyCycle = 0, invert = False):
       self._pin = pin
-      self._pinMode = 16#SerialWombat.SerialWombatPinMode_t.PIN_MODE_PWM
+      self._pinMode = SerialWombat.SerialWombatPinMode_t.PIN_MODE_PWM
       tx= [ 0xC8,self._pin,self._pinMode,self._pin,(dutyCycle & 0xFF),(dutyCycle >> 8),invert,0x55 ]
       self._sw.sendPacket(tx)
     SW4AB_PWMFrequency_1_Hz = 0x76
@@ -159,16 +159,16 @@ class SerialWombatPWM_4AB (SerialWombatPWM):
     PIC16F15214 hardware.
     """
     def setFrequency_SW4AB(self, frequency):
-      tx= [ 220, # SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE_HW_0,
+      tx= [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE_HW_0,
             self._pin,self._pinMode,frequency,0x55,0x55,0x55,0x55 ]
       self._sw.sendPacket(tx)
 
 #! @brief Extends the SerialWombatPWM class with SW18AB specific functionality, including SerialWombatAbstractScaledOutput
 class SerialWombatPWM_18AB(SerialWombatPWM, SerialWombatAbstractScaledOutput):
     def __init__(self,serial_wombat):
-		SerialWombatPWM.__init__(self,serial_wombat)
-		SerialWombatAbstractScaledOutput.__init__(self,serial_wombat)
-		self._asosw = serial_wombat
+        SerialWombatPWM.__init__(self,serial_wombat)
+        SerialWombatAbstractScaledOutput.__init__(self,serial_wombat)
+        self._asosw = serial_wombat
 
     """!
     @brief Set the PWM frequency on a Serial Wombat 18AB chip's PWM

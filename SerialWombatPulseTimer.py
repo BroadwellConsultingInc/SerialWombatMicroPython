@@ -25,15 +25,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 
 
 import SerialWombatPin
+from SerialWombat import SerialWombatPinMode_t
 
 
 """! \file serialWombatPulseTimer.h
 """
-#TODO typedef enum
-#TODO {
-#TODO 	SW_PULSETIMER_uS = 0,
-#TODO 	SW_PULSETIMER_mS = 1
-#TODO } SerialWombatPulseTimerUnits;
+def SerialWombatPulseTimerUnits():
+	SW_PULSETIMER_uS = 0
+	SW_PULSETIMER_mS = 1
+
 
 """! @brief A Class which uses a Serial Wombat pin to measure the length of a pulse high and low time
 
@@ -93,7 +93,7 @@ class SerialWombatPulseTimer(SerialWombatPin.SerialWombatPin):
 	"""
 	def begin(self,pin, units = 0 , pullUpEnabled = False):
 		self._pin = pin
-		self._pinMode = 18 #TODO Enum...PIN_MODE_PULSETIMER
+		self._pinMode = SerialWombatPinMode_t.PIN_MODE_PULSETIMER
 		tx = [ 200,self._pin,self._pinMode,pullUpEnabled,units,0x55,0x55,0x55 ]
 		count,rx = self._sw.sendPacket(tx)
 

@@ -52,9 +52,9 @@ class SerialWombatProcessedInputPin(SerialWombatAbstractProcessedInput.SerialWom
         """
 	def begin(self, pin,  dataSourcePin):
 		self._pin = pin
-		self._pinMode = 14 #SerialWombat.SerialWombatPinMode_t.PIN_MODE_INPUT_PROCESSOR;
+		self._pinMode = SerialWombat.SerialWombatPinMode_t.PIN_MODE_INPUT_PROCESSOR;
 		self.abstractProcessedInputBegin(pin,self._pinMode)
-		tx = [ 200, #SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE0,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE0,
 		self._pin,
 		self._pinMode,
 		dataSourcePin,
