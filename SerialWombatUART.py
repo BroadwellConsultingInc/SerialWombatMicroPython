@@ -110,9 +110,9 @@ class SerialWombatUART (SerialWombatPin):
                 self._txPin = 255
                 self._baudMarker = 0
                 self.timeout = 5000
-                self._pinMode = 17 #PIN_MODE_UART_RX_TX
-                self._tx7Command = 0xB0 #SerialWombatCommands::COMMAND_UART0_TX_7BYTES
-                self._rx7Command = 0xB1 # SerialWombatCommands::COMMAND_UART0_RX_7BYTES
+                self._pinMode = SerialWombat.SerialWombatPinMode_t.PIN_MODE_UART_RX_TX
+                self._tx7Command = SerialWombat.SerialWombatCommands.COMMAND_UART0_TX_7BYTES
+                self._rx7Command = SerialWombat.SerialWombatCommands.COMMAND_UART0_RX_7BYTES
                 self._1ByteTransmissions = False
 
         """!
@@ -128,14 +128,14 @@ class SerialWombatUART (SerialWombatPin):
                 self._txPin = txPin
                 self._pin = pin
                 if (HWinterface == 2):
-                    self._pinMode = 23 # PIN_MODE_UART1_RX_TX
-                    self._tx7Command = 0xB2 #SerialWombatCommands::COMMAND_UART1_TX_7BYTES
-                    self._rx7Command = 0xB3 #SerialWombatCommands::COMMAND_UART1_RX_7BYTES
+                    self._pinMode = SerialWombat.SerialWombatPinMode_t.PIN_MODE_UART1_RX_TX
+                    self._tx7Command =SerialWombat.SerialWombatCommands.COMMAND_UART1_TX_7BYTES
+                    self._rx7Command = SerialWombat.SerialWombatCommands.COMMAND_UART1_RX_7BYTES
 
                 elif (HWinterface == 1):
                     self._pinMode = 17 # PIN_MODE_UART_RX_TX
-                    self._tx7Command = 0xB0 # SerialWombatCommands::COMMAND_UART0_TX_7BYTES
-                    self._rx7Command = 0xB1 # SerialWombatCommands::COMMAND_UART0_RX_7BYTES
+                    self._tx7Command = SerialWombat.SerialWombatCommands.COMMAND_UART0_TX_7BYTES
+                    self._rx7Command = SerialWombat.SerialWombatCommands.COMMAND_UART0_RX_7BYTES
                 else:
                     return (-1)
              
@@ -323,7 +323,7 @@ class SerialWombatUART (SerialWombatPin):
                 return (buf)
 
 
-        def setTimeout(timeout_mS):
+        def setTimeout(self, timeout_mS):
                 if (timeout_mS == 0):
                         self.timeout = 0x80000000
                 else:
@@ -396,7 +396,7 @@ class SerialWombatSWUART ( SerialWombatUART):
         self._txPin = txPin
         self._pin = pin
 
-        self._pinMode = 13# PIN_MODE_SW_UART
+        self._pinMode = SerialWombat.SerialWombatPinMode_t.PIN_MODE_SW_UART
 
 
         if (baudRate == 300):

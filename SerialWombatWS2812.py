@@ -28,12 +28,12 @@ import SerialWombatPin
 from SerialWombat import SW_LE16
 from SerialWombat import SW_LE32
 
-"""
-class SWWS2812Mode(IntEnum):
-	ws2812ModeBuffered = 0,  #!< Standard buffered mode.  Colors are uploaded by the host
-	ws2812ModeAnimation = 1,	#!< Multiple arrays with delays are uploaded by the host and displayed over time by the Serial Wombat chip
-	ws2812ModeChase = 2, #!< A single lit LED cycles through all of the LEDs.
-"""
+
+class SWWS2812Mode():
+	ws2812ModeBuffered = 0  #!< Standard buffered mode.  Colors are uploaded by the host
+	ws2812ModeAnimation = 1	#!< Multiple arrays with delays are uploaded by the host and displayed over time by the Serial Wombat chip
+	ws2812ModeChase = 2 #!< A single lit LED cycles through all of the LEDs.
+
 
 """!
 @brief A Class representing a WS2812 or compatible RGB LED string connected to a Serial Wombat pin

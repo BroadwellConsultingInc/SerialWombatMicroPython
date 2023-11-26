@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 """
 
 import SerialWombatPin
-#from SerialWombat import SerialWombatPinMode_t
+from SerialWombat import SerialWombatPinMode_t
 from SerialWombat import SW_LE16
 
 #include <stdint.h>
@@ -33,15 +33,13 @@ from SerialWombat import SW_LE16
 """! @file SerialWombatAnalogInput.h
 """
 
-"""#TODO
-enum class AnalogInputPublicDataOutput {
-	AnalogInputPublicDataOutput_Raw = 0,  ///< The raw A/D reading is displayed as public data (default)
-	AnalogInputPublicDataOutput_Filtered = 1,	///< The Filtered A/D reading is displayed as public data (default)
-	AnalogInputPublicDataOutput_Averaged = 2,	///< The Averaged A/D reading is displayed as public data (default)
-	AnalogInputPublicDataOutput_Minimum = 3,	///< The Minimum A/D reading is displayed as public data (default)
-	AnalogInputPublicDataOutput_Maximum = 4,	///< The Maximum A/D reading is displayed as public data (default)
-}
-"""
+class AnalogInputPublicDataOutput():
+	AnalogInputPublicDataOutput_Raw = 0  # The raw A/D reading is displayed as public data (default)
+	AnalogInputPublicDataOutput_Filtered = 1	# The Filtered A/D reading is displayed as public data (default)
+	AnalogInputPublicDataOutput_Averaged = 2	# The Averaged A/D reading is displayed as public data (default)
+	AnalogInputPublicDataOutput_Minimum = 3	# The Minimum A/D reading is displayed as public data (default)
+	AnalogInputPublicDataOutput_Maximum = 4	# The Maximum A/D reading is displayed as public data (default)
+
 
 """!
 
@@ -101,9 +99,9 @@ class SerialWombatAnalogInput(SerialWombatPin.SerialWombatPin):
 	@param publicDataOutput What to output as pin public data.  Default is raw.
 	@return Returns a negative error code if initialization failed.
 	"""
-	def begin(self, pin,  averageSamples = 64,  filterConstant = 0xFF80,  output =  0):#AnalogInputPublicDataOutput::AnalogInputPublicDataOutput_Raw):
+	def begin(self, pin,  averageSamples = 64,  filterConstant = 0xFF80,  output = AnalogInputPublicDataOutput.AnalogInputPublicDataOutput_Raw):
 		self._pin = pin
-		self._pinMode = 2 #SerialWombatPinMode_t.PIN_MODE_ANALOGINPUT
+		self._pinMode = SerialWombatPinMode_t.PIN_MODE_ANALOGINPUT
 		tx = [ 200,self._pin,self._pinMode,0,0,0,0,0 ]
 		result,rx = self._sw.sendPacket(tx)
 		if(result < 0):

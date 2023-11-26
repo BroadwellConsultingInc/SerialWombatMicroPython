@@ -62,11 +62,11 @@ import SerialWombatAbstractProcessedInput
 #from enum import IntEnum
 from SerialWombat import SW_LE16
 
-"""
-class SWHSCounterPublicDataOutput(IntEnum):
+
+class SWHSCounterPublicDataOutput():
 		PULSE_COUNT = 2 #< The number of pulses that have occured since initialization. 
 		FREQUENCY_ON_LTH_TRANSITION = 5 #< The frequency of the pulse in Hz
-"""
+
 
 class SerialWombatHSCounter ( SerialWombatAbstractProcessedInput.SerialWombatAbstractProcessedInput):
 
@@ -90,10 +90,10 @@ class SerialWombatHSCounter ( SerialWombatAbstractProcessedInput.SerialWombatAbs
 	def begin(self, pin, publicDataOutput = 5,#FREQUENCY_ON_LTH_TRANSITION
               framesBetweenUpdates = 100, publicOutputDivisor = 1):
 		self._pin = pin
-		self._pinMode = 30 #SerialWombat.SerialWombatPinMode_t.PIN_MODE_HS_COUNTER
+		self._pinMode = SerialWombat.SerialWombatPinMode_t.PIN_MODE_HS_COUNTER
 		self.abstractProcessedInputBegin(pin,self._pinMode)
 
-		tx = bytearray([200,# SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE0,
+		tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE0,
 		self._pin,
 		self._pinMode]) + SW_LE16(framesBetweenUpdates) + SW_LE16(publicOutputDivisor) + bytearray([publicDataOutput])
 		result, rx = self._sw.sendPacket(tx)
@@ -105,7 +105,7 @@ class SerialWombatHSCounter ( SerialWombatAbstractProcessedInput.SerialWombatAbs
 		if resetCounts:
 			resetCountsInt = 1
 
-		tx= [201,# SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE1,
+		tx= [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE1,
 		self._pin,
 		self._pinMode,
 		resetCountsInt,
@@ -121,7 +121,7 @@ class SerialWombatHSCounter ( SerialWombatAbstractProcessedInput.SerialWombatAbs
 		return(returnval)
 
 	def readFrequency(self):
-		tx = [ 201, #SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE1,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE1,
 		self._pin,
 		self._pinMode,
 		0x55,
@@ -140,7 +140,7 @@ class SerialWombatHSCounter ( SerialWombatAbstractProcessedInput.SerialWombatAbs
 	@brief Disables the high speed clock output
 	"""
 	def disable (self):
-		tx = [ 219,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE_DISABLE,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE_DISABLE,
 		self._pin,
 		self._pinMode,
 		0x55,0x55,0x55,0x55,0x55

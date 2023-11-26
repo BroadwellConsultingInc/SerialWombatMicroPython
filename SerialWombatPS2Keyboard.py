@@ -476,8 +476,8 @@ class SerialWombatPS2Keyboard (SerialWombatPin):
         @param scanCode The scan code of the key being checked.  Set the 0x80 bit if it's an extended code
         @return returns True if the key is currently pressed
         """
-        def isKeyPressed( scanCode):
-                result = readCurrentScanCodes(scanCode)
+        def isKeyPressed(self, scanCode):
+                result = self.readCurrentScanCodes(scanCode)
                 return (len(result) > 0)
 
 

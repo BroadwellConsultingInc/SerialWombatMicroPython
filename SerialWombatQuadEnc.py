@@ -36,15 +36,15 @@ from SerialWombat import SW_LE32
 
 """! \file SerialWombatQuadEnc.h
 """
-"""
-class QE_READ_MODE_t (IntEnum):
-	QE_ONLOW_INT = 0,  #< Interrupt driven, process on high to low transition
-	QE_ONHIGH_INT = 1, #< Interrupt driven, process on low to high transition
-	QE_ONBOTH_INT = 2, #< Interrupt driven, process on low to high and high to low transition
-	QE_ONLOW_POLL = 4,   #< 1mS Polling, process on high to low transition
-	QE_ONHIGH_POLL = 5,	 #< 1mS Polling, process on low to high transition
+
+class QE_READ_MODE_t ():
+	QE_ONLOW_INT = 0  #< Interrupt driven, process on high to low transition
+	QE_ONHIGH_INT = 1 #< Interrupt driven, process on low to high transition
+	QE_ONBOTH_INT = 2 #< Interrupt driven, process on low to high and high to low transition
+	QE_ONLOW_POLL = 4   #< 1mS Polling, process on high to low transition
+	QE_ONHIGH_POLL = 5	 #< 1mS Polling, process on low to high transition
 	QE_ONBOTH_POLL = 6	 #< 1mS Polling, process on low to high and high to low transition
-"""
+
 
 
 """! @brief A class that uses two Serial Wombat input pins to read quadrature encoder input

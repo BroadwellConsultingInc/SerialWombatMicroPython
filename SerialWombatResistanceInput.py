@@ -28,19 +28,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 """
 
 
-"""
-enum ResistanceInputPublicDataOutput {
-	ResistanceInputPublicDataOutput_Raw = 0,  ///< The raw Resistance reading is displayed as public data (default)
-	ResistanceInputPublicDataOutput_Filtered = 1,	///< The Filtered Resistance reading is displayed as public data (default)
-	ResistanceInputPublicDataOutput_Averaged = 2,	///< The Averaged Resistance reading is displayed as public data (default)
-	ResistanceInputPublicDataOutput_Minimum = 3,	///< The Minimum Resistance reading is displayed as public data (default)
-	ResistanceInputPublicDataOutput_Maximum = 4,	///< The Maximum Resistance reading is displayed as public data (default)
-};
-"""
+
+class ResistanceInputPublicDataOutput():
+	ResistanceInputPublicDataOutput_Raw = 0  #< The raw Resistance reading is displayed as public data (default)
+	ResistanceInputPublicDataOutput_Filtered = 1	#< The Filtered Resistance reading is displayed as public data (default)
+	ResistanceInputPublicDataOutput_Averaged = 2	#< The Averaged Resistance reading is displayed as public data (default)
+	ResistanceInputPublicDataOutput_Minimum = 3	#< The Minimum Resistance reading is displayed as public data (default)
+	ResistanceInputPublicDataOutput_Maximum = 4	#< The Maximum Resistance reading is displayed as public data (default)
+
+
 import SerialWombat
 from SerialWombatPin import SerialWombatPin
 import SerialWombatAbstractProcessedInput
 #from enum import IntEnum
+from SerialWombat import SerialWombatPinMode_t
 from SerialWombat import SW_LE16
 
 """!
@@ -98,7 +99,7 @@ class SerialWombatResistanceInput (SerialWombatAbstractProcessedInput.SerialWomb
 	"""
 	def begin(self, pin,  averageSamples = 64,  filterConstant = 0xFF80 , output = 0):
 		self._pin = pin
-		self._pinMode = 24  # PIN_MODE_RESISTANCEINPUT
+		self._pinMode = SerialWombatPinMode_t.PIN_MODE_RESISTANCEINPUT
 		tx = [ 200,self._pin,self._pinMode,0x55,0x55,0x55,0x55,0x55 ];
 		self._sw.sendPacket(tx)
 		tx = bytearray([ 201,self._pin,self._pinMode]) + SW_LE16(averageSamples)  + SW_LE16(filterConstant) + bytearray([output])

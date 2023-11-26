@@ -139,7 +139,7 @@ class SerialWombatSimulatedQuadEnc:
 					self.state = SIMQE_1ST_TRANSITION_2ND_PIN_COMPLETED
 
 			if (self.state == SIMQE_2ND_TRANSITION_2ND_PIN_COMPLETED):
-				if (millis() > self.lastTransitionTime_millis + self.delayAfterFirstPinSecondTransition_mS):
+				if (self.millis() > self.lastTransitionTime_millis + self.delayAfterFirstPinSecondTransition_mS):
 						self.state = SIMQE_IDLE
 		return (self.state == SIMQE_IDLE)
 

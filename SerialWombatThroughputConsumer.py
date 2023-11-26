@@ -55,8 +55,8 @@ class SerialWombatThroughputConsumer(SerialWombatPin):
 	"""
 	def begin(self, pin):
 		self._pin = pin
-		tx = [ 200, #SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE0,pin,
-					pin, 4,#	SerialWombat.SerialWombatPinMode_t.PIN_MODE_THROUGHPUT_CONSUMER,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE0,pin,
+					pin, SerialWombat.SerialWombatPinMode_t.PIN_MODE_THROUGHPUT_CONSUMER,
 						0x55,0x55,0x55,0x55,0x55 ]
 		result,rx = self._sw.sendPacket(tx)
 		return result
@@ -70,9 +70,9 @@ class SerialWombatThroughputConsumer(SerialWombatPin):
 	"""
 	def writeAll(self, delay):
 		for i in range(16):
-			tx = bytearray([201, #SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE1,
+			tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE1,
 							self._pin,
-							4,#SerialWombat.SerialWombatPinMode_t.PIN_MODE_THROUGHPUT_CONSUMER,
+							SerialWombat.SerialWombatPinMode_t.PIN_MODE_THROUGHPUT_CONSUMER,
 							i]) + SW_LE16(delay) + bytearray([ 0x55,0x55])
 			result,rx = self._sw.sendPacket(tx);
 			if (result < 0):
@@ -88,9 +88,9 @@ class SerialWombatThroughputConsumer(SerialWombatPin):
 	
 	"""
 	def write(self, frame,  delay):
-		tx = bytearray([ 201, #SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE1,
+		tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE1,
 			self._pin,
-                         4,#PIN_MODE_THROUGHPUT_CONSUMER ,
+                         SerialWombat.SerialWombatPinMode_t.PIN_MODE_THROUGHPUT_CONSUMER,
 							frame])+ SW_LE16(delay) + bytearray([0x55,0x55])
 		result,rx = self._sw.sendPacket(tx)
 		return result
@@ -105,7 +105,7 @@ class SerialWombatThroughputConsumer(SerialWombatPin):
 	
 	"""
 	def delayInCommProcessing(self, delay):
-		tx = bytearray([202, #SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE2,
+		tx = bytearray([ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE2,
 							self._pin,
                             4]) + SW_LE16(delay) + bytearray([ 0x55,0x55, 0x55])
 		result,rx = self._sw.sendPacket(tx)
