@@ -7,9 +7,10 @@ import machine
 class SerialWombatChip_mp_i2c(SerialWombat.SerialWombatChip):
     i2c  = 0
     def __init__(self,i2c_port,address):
+        super().__init__()
         self.i2c = i2c_port
         self.address = address
-        super().__init__()
+
 
 
     def sendReceivePacketHardware (self,tx):
