@@ -319,9 +319,9 @@ class SerialWombatTM1637(SerialWombatPin):
 			buffer += size - 6
 			size = 6
 		if (size > 4):
-			tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE8, # Pin Set command
+			tx = [208,# SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE8, # Pin Set command
 			self._pin,
-			SerialWombat.SerialWombatPinMode_t.PIN_MODE_TM1637, # TM1637
+			11, # TM1637SerialWombat.SerialWombatPinMode_t.PIN_MODE_TM1637, # TM1637
 			4,
 			buffer[0],
 			buffer[1],
@@ -332,9 +332,9 @@ class SerialWombatTM1637(SerialWombatPin):
 			size -= 4
 			buffer += 4
 
-		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE8, # Pin Set command
+		tx = [ 208,#SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE8, # Pin Set command
                 self._pin,
-                SerialWombat.SerialWombatPinMode_t.PIN_MODE_TM1637, # TM1637
+                11, # TM1637SerialWombat.SerialWombatPinMode_t.PIN_MODE_TM1637, # TM1637
                 size,
                 0x55,
                 0x55,

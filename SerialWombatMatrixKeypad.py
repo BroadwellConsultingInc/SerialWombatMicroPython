@@ -31,7 +31,6 @@ from SerialWombatPin import SerialWombatPin
 from SerialWombat import SW_LE32
 from SerialWombat import SW_LE16
 from ArduinoFunctions import millis
-from enum import IntEnum
 
 """! @brief A class for the Serial Wombat SW18AB chips which scans matrix keypads up to 4x4
 
