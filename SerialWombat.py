@@ -382,10 +382,10 @@ class SerialWombatChip:
         if (self._asleep):
             self._asleep = False;    
             txw = [ 0x21,0x21,0x21,0x21,0x21,0x21,0x21,0x21 ] 
-            self.sendPacketHardware(txw)
+            self.sendPacketToHardware(txw)
             delayMicroseconds(200)
             txu = [ 0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55, ] 
-            self.sendPacketHardware(txu)
+            self.sendPacketToHardware(txu)
         if (self.sendReadyTime != 0):
             currentTime = millis()
             if (currentTime < self.sendReadyTime):
@@ -867,8 +867,8 @@ class SerialWombatChip:
             else:
                 count -=4
             a = address + bytesSent
-            tx = [84,a & 0xFF, a//256,bytesToSend,0x55,0x55,0x55,0x55]
-            for i in range(count):
+            tx = [0x84,a & 0xFF, a//256,bytesToSend,0x55,0x55,0x55,0x55]
+            for i in range(bytesToSend):
                 tx[4+i] = buf[i + bytesSent]
             result,rx = self.sendPacket(tx)
             if (result < 0):
