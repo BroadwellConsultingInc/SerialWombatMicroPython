@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 
 import SerialWombatPin
 from SerialWombat import SerialWombatPinMode_t
-
+from SerialWombatAbstractProcessedInput import SerialWombatAbstractProcessedInput
 
 """! \file serialWombatPulseTimer.h
 """
@@ -194,32 +194,27 @@ class SerialWombatPulseTimer(SerialWombatPin.SerialWombatPin):
 This class adds functionality that is specific to the SW18AB firmware in addition
 to generic SerialWombatPulseTimer functionality avaialble on all Serial Wombat chips
 """
-"""
-class SerialWombatPulseTimer_18AB : public SerialWombatPulseTimer, public SerialWombatAbstractProcessedInput
-{
-public:
-	enum publicDataOutput {
-		HIGH_TIME = 0, ///<  The pulse high time in uS.  Updated on each high to low transition.
-		LOW_TIME = 1, ///< the pulse low time in uS.  Update on each low to high transition.
-		PULSE_COUNT = 2, ///< The number of pulses that have occured since initialization.  Updated on each high to low transition
-		PERIOD_ON_LTH_TRANSITION = 3,  ///< The period of the pulse in uS, based on the previous high and low times, updated on low to high transition
-		PERIOD_ON_HTL_TRANSITION = 4,  ///< The period of the pulse in uS, based on the previous high and low times, updated on high to low transition
-		FREQUENCY_ON_LTH_TRANSITION = 5, ///< The frequency of the pulse in Hz, based on the previous high and low times, updated on low to high transition
-		FREQUENCY_ON_HTL_TRANSITION = 6, ///< The frequency of the pulse in Hz, based on the previous high and low times, updated on high to low transition
-		DUTYCYCLE_ON_LTH_TRANSITION = 7, ///< Duty cycle of the pulse as a ratio from 0 to 65535, updated on low to high transition
-		DUTYCYCLE_ON_HTL_TRANSITION = 8, ///< Duty cycle of the pulse as a ratio from 0 to 65535, updated on high to low transition
-	};
-"""
-"""!
+class SerialWombatPulseTimer_18AB(SerialWombatPulseTimer, SerialWombatAbstractProcessedInput):
+	
+	"""!
 	@brief constructor for SerialWombatPulseTimer_18AB
 	@param serialWombat reference to the SerialWombat chip on which the SerialWombatPulseTimer_18AB will run
 	"""
-"""
-	SerialWombatPulseTimer_18AB(SerialWombatChip& serialWombat)::SerialWombatPulseTimer_18AB(SerialWombatChip& serialWombat):SerialWombatPulseTimer(serialWombat), SerialWombatAbstractProcessedInput(serialWombat)
-	{
-	}
-"""
-"""!
+	def __init__(self,serial_wombat):
+		SerialWombatPulseTimer.__init__(self,serial_wombat)
+		SerialWombatAbstractProcessedInput.__init__(self,serial_wombat)
+		self._asosw = serial_wombat
+		self.PDO_HIGH_TIME = 0 #!<  The pulse high time in uS.  Updated on each high to low transition.
+		self.PDO_LOW_TIME = 1 #!< the pulse low time in uS.  Update on each low to high transition.
+		self.PDO_PULSE_COUNT = 2 #!< The number of pulses that have occured since initialization.  Updated on each high to low transition
+		self.PDO_PERIOD_ON_LTH_TRANSITION = 3  #!< The period of the pulse in uS, based on the previous high and low times, updated on low to high transition
+		self.PDO_PERIOD_ON_HTL_TRANSITION = 4  #!< The period of the pulse in uS, based on the previous high and low times, updated on high to low transition
+		self.PDO_FREQUENCY_ON_LTH_TRANSITION = 5 #!< The frequency of the pulse in Hz, based on the previous high and low times, updated on low to high transition
+		self.PDO_FREQUENCY_ON_HTL_TRANSITION = 6 #!< The frequency of the pulse in Hz, based on the previous high and low times, updated on high to low transition
+		self.PDO_DUTYCYCLE_ON_LTH_TRANSITION = 7 #!< Duty cycle of the pulse as a ratio from 0 to 65535, updated on low to high transition
+		self.PDO_DUTYCYCLE_ON_HTL_TRANSITION = 8 #!< Duty cycle of the pulse as a ratio from 0 to 65535, updated on high to low transition
+
+	"""!
 	@brief configures which measurement is the Public Data Output of this pin mode
 	 
 	 This function sets what data is avaialble through the public data 
@@ -228,16 +223,11 @@ public:
 	@param publicDataOutput An enumerated type indicating what data to output
 	@return returns 0 or higher for success or a negative error code.
 	"""
-"""
-        configurePublicDataOutput(SerialWombatPulseTimer_18AB::publicDataOutput publicDataOutput):
-		tx[] = [ 203,self._pin,self._pinMode,(uint8_t) publicDataOutput]
-		return count,rx = self._sw.sendPacket(tx)
+	def	configurePublicDataOutput(self, publicDataOutput):
+		tx = [ 203,self._pin,self._pinMode, publicDataOutput, 0x55,0x55,0x55] 
+		count,rx = self._sw.sendPacket(tx)
+		return count
 	
-	/// @brief Facilitates multi-inheritance
-        pin(self):
-            return self._pin
-	/// @brief Facilitates multi-inheritance
-        swPinModeNumber(self):
-            return self._pinMode
-};
-	"""
+	def begin(self,pin, units = 0 , pullUpEnabled = False):
+		SerialWombatPulseTimer.begin(self,pin,units,pullUpEnabled)
+		self.abstractProcessedInputBegin(pin,self._pinMode)

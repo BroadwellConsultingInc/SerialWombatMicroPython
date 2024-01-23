@@ -170,87 +170,91 @@ class SerialWombatDataSource():
 
 
 class SerialWombatCommands():
-	CMD_ECHO =ord('!') #!< ('!')
-	CMD_READ_BUFFER_ASCII = ord('G')#!< ('G')
-	CMD_ASCII_SET_PIN =ord('P') #!< ('P')
-	CMD_RESET = ord('R') #!< ('R')
-	CMD_SET_BUFFER_ASCII = ord('S')#!< ('S')
-	CMD_RESYNC = ord('U')#!< ('U')
-	CMD_VERSION = ord('V')#!< ('V')
-	CMD_SUPPLYVOLTAGE = ord('v')#!< ('v')
-	COMMAND_BINARY_READ_PIN_BUFFFER = 0x81 #!< (0x81)
-	COMMAND_BINARY_SET_PIN_BUFFFER = 0x82 #!< (0x82)
-	COMMAND_BINARY_READ_USER_BUFFER = 0x83 #!< (0x83)
-	COMMAND_BINARY_WRITE_USER_BUFFER = 0x84 #!< (0x84)
-	COMMAND_BINARY_WRITE_USER_BUFFER_CONTINUE = 0x85 #!< (0x85)
-	COMMAND_BINARY_QUEUE_INITIALIZE = 0x90 #!< (0x90)
-	COMMAND_BINARY_QUEUE_ADD_BYTES = 0x91 #!< (0x91)
-	COMMAND_BINARY_QUEUE_ADD_7BYTES = 0x92 #!< (0x92)
-	COMMAND_BINARY_QUEUE_READ_BYTES = 0x93 #!< (0x93)
-	COMMAND_BINARY_QUEUE_INFORMATION = 0x94 #!< (0x94)
-	COMMAND_BINARY_CONFIGURE = 0x9F #!< (0x9F)
-	COMMAND_BINARY_READ_RAM = 0xA0 #!< (0xA0)
-	COMMAND_BINARY_READ_FLASH = 0xA1 #!< (0xA1)
-	COMMAND_BINARY_READ_EEPROM = 0xA2 #!< (0xA2)
-	COMMAND_BINARY_WRITE_RAM = 0xA3 #!< (0xA3)
-	COMMAND_BINARY_WRITE_FLASH = 0xA4 #!< (0xA4)
-	COMMAND_CALIBRATE_ANALOG = 0xA5 #!< (0xA5)
-	COMMAND_ENABLE_2ND_UART = 0xA6 #!< (0xA6)
-	COMMAND_READ_LAST_ERROR_PACKET = 0xA7 #!< (0xA7)
-	COMMAND_UART0_TX_7BYTES = 0xB0 #!< (0xB0)
-	COMMAND_UART0_RX_7BYTES = 0xB1 #!< (0xB1)
-	COMMAND_UART1_TX_7BYTES = 0xB2 #!< (0xB2)
-	COMMAND_UART1_RX_7BYTES = 0xB3 #!< (0xB3)
-	CONFIGURE_PIN_MODE0 = 200 #!< (200)
-	CONFIGURE_PIN_MODE1 = 201 #!< (201)
-	CONFIGURE_PIN_MODE2 = 202 #!< (202)
-	CONFIGURE_PIN_MODE3 = 203 #!< (203)
-	CONFIGURE_PIN_MODE4 = 204 #!< (204)
-	CONFIGURE_PIN_MODE5 = 205 #!< (205)
-	CONFIGURE_PIN_MODE6 = 206 #!< (206)
-	CONFIGURE_PIN_MODE7 = 207 #!< (207)
-	CONFIGURE_PIN_MODE8 = 208 #!< (208)
-	CONFIGURE_PIN_MODE9 = 209 #!< (209)
-	CONFIGURE_PIN_MODE10 = 210 #!< (210)
-	CONFIGURE_PIN_OUTPUTSCALE = 210 #!< (210)
-	CONFIGURE_PIN_MODE_DISABLE = 219 #!< (219)
-	CONFIGURE_PIN_INPUTPROCESS = 211 #!< (211)
-	CONFIGURE_PIN_MODE_HW_0 = 220 #!< (220)
-	CONFIGURE_CHANNEL_MODE_HW_1 = 221 #!< (221)
-	CONFIGURE_CHANNEL_MODE_HW_2 = 222 #!< (222)
-	CONFIGURE_CHANNEL_MODE_HW_3 = 223 #!< (223)
+    CMD_ECHO =ord('!') #!< ('!')
+    CMD_READ_BUFFER_ASCII = ord('G')#!< ('G')
+    CMD_ASCII_SET_PIN =ord('P') #!< ('P')
+    CMD_RESET = ord('R') #!< ('R')
+    CMD_SET_BUFFER_ASCII = ord('S')#!< ('S')
+    CMD_RESYNC = ord('U')#!< ('U')
+    CMD_VERSION = ord('V')#!< ('V')
+    CMD_SUPPLYVOLTAGE = ord('v')#!< ('v')
+    COMMAND_BINARY_READ_PIN_BUFFFER = 0x81 #!< (0x81)
+    COMMAND_BINARY_SET_PIN_BUFFFER = 0x82 #!< (0x82)
+    COMMAND_BINARY_READ_USER_BUFFER = 0x83 #!< (0x83)
+    COMMAND_BINARY_WRITE_USER_BUFFER = 0x84 #!< (0x84)
+    COMMAND_BINARY_WRITE_USER_BUFFER_CONTINUE = 0x85 #!< (0x85)
+    COMMAND_BINARY_QUEUE_INITIALIZE = 0x90 #!< (0x90)
+    COMMAND_BINARY_QUEUE_ADD_BYTES = 0x91 #!< (0x91)
+    COMMAND_BINARY_QUEUE_ADD_7BYTES = 0x92 #!< (0x92)
+    COMMAND_BINARY_QUEUE_READ_BYTES = 0x93 #!< (0x93)
+    COMMAND_BINARY_QUEUE_INFORMATION = 0x94 #!< (0x94)
+    COMMAND_BINARY_CONFIGURE = 0x9F #!< (0x9F)
+    COMMAND_BINARY_READ_RAM = 0xA0 #!< (0xA0)
+    COMMAND_BINARY_READ_FLASH = 0xA1 #!< (0xA1)
+    COMMAND_BINARY_READ_EEPROM = 0xA2 #!< (0xA2)
+    COMMAND_BINARY_WRITE_RAM = 0xA3 #!< (0xA3)
+    COMMAND_BINARY_WRITE_FLASH = 0xA4 #!< (0xA4)
+    COMMAND_CALIBRATE_ANALOG = 0xA5 #!< (0xA5)
+    COMMAND_ENABLE_2ND_UART = 0xA6 #!< (0xA6)
+    COMMAND_READ_LAST_ERROR_PACKET = 0xA7 #!< (0xA7)
+    COMMAND_UART0_TX_7BYTES = 0xB0 #!< (0xB0)
+    COMMAND_UART0_RX_7BYTES = 0xB1 #!< (0xB1)
+    COMMAND_UART1_TX_7BYTES = 0xB2 #!< (0xB2)
+    COMMAND_UART1_RX_7BYTES = 0xB3 #!< (0xB3)
+    COMMAND_BINARY_TEST_SEQUENCE = 0xB4 #!< (0xB4)
+    COMMAND_BINARY_RW_PIN_MEMORY = 0xB5 #!< (0xB5)
+    COMMAND_CAPTURE_STARTUP_SEQUENCE = 0xB6 #!< (0xB6)
+    COMMAND_ADJUST_FREQUENCY = 0xB7 #!< (0xB7)
+    CONFIGURE_PIN_MODE0 = 200 #!< (200)
+    CONFIGURE_PIN_MODE1 = 201 #!< (201)
+    CONFIGURE_PIN_MODE2 = 202 #!< (202)
+    CONFIGURE_PIN_MODE3 = 203 #!< (203)
+    CONFIGURE_PIN_MODE4 = 204 #!< (204)
+    CONFIGURE_PIN_MODE5 = 205 #!< (205)
+    CONFIGURE_PIN_MODE6 = 206 #!< (206)
+    CONFIGURE_PIN_MODE7 = 207 #!< (207)
+    CONFIGURE_PIN_MODE8 = 208 #!< (208)
+    CONFIGURE_PIN_MODE9 = 209 #!< (209)
+    CONFIGURE_PIN_MODE10 = 210 #!< (210)
+    CONFIGURE_PIN_OUTPUTSCALE = 210 #!< (210)
+    CONFIGURE_PIN_MODE_DISABLE = 219 #!< (219)
+    CONFIGURE_PIN_INPUTPROCESS = 211 #!< (211)
+    CONFIGURE_PIN_MODE_HW_0 = 220 #!< (220)
+    CONFIGURE_CHANNEL_MODE_HW_1 = 221 #!< (221)
+    CONFIGURE_CHANNEL_MODE_HW_2 = 222 #!< (222)
+    CONFIGURE_CHANNEL_MODE_HW_3 = 223 #!< (223)
 
 class SerialWombatPinMode_t():
-	PIN_MODE_DIGITALIO = 0 #!< (0)
-	PIN_MODE_CONTROLLED = 1 #!< (1)
-	PIN_MODE_ANALOGINPUT = 2 #!< (2)
-	PIN_MODE_SERVO = 3 #!< (3)
-	PIN_MODE_THROUGHPUT_CONSUMER = 4 #!< (4)
-	PIN_MODE_QUADRATUREENCODER = 5 #!< (5)
-	PIN_MODE_WATCHDOG = 7 #!< (7)
-	PIN_MODE_PROTECTED_OUTPUT = 8 #!< (8)
-	PIN_MODE_DEBOUNCE = 10 #!< (10)
-	PIN_MODE_TM1637 = 11 #!< (11)
-	PIN_MODE_WS2812 = 12 #!< (12)
-	PIN_MODE_SW_UART = 13 #!< (13)
-	PIN_MODE_INPUT_PROCESSOR = 14 #!< (14)
-	PIN_MODE_MATRIX_KEYPAD = 15 #!< (15)
-	PIN_MODE_PWM = 16 #!< (16)
-	PIN_MODE_UART_RX_TX = 17 #!< (17)  
-	PIN_MODE_PULSETIMER = 18 #!< (18)
-	PIN_MODE_FRAME_TIMER = 21 #!< (21)
-	PIN_MODE_SW18AB_CAPTOUCH = 22 #!< (22)
-	PIN_MODE_UART1_RX_TX = 23 #!< (23)
-	PIN_MODE_RESISTANCEINPUT = 24 #!< (24)
-	PIN_MODE_PULSE_ON_CHANGE = 25 #!< (25)
-	PIN_MODE_HS_SERVO = 26 #!< (26)
-	PIN_MODE_ULTRASONIC_DISTANCE = 27 #!< (27)
-	PIN_MODE_LIQUIDCRYSTAL = 28 #!< (28)
-	PIN_MODE_HS_CLOCK = 29 #! < (29)
-	PIN_MODE_HS_COUNTER = 30 #!< (30)
-	PIN_MODE_VGA = 31 #!<(31)
-	PIN_MODE_PS2KEYBOARD = 32 #!<(32)
-	PIN_MODE_UNKNOWN = 255 #!< (0xFF)
+    PIN_MODE_DIGITALIO = 0 #!< (0)
+    PIN_MODE_CONTROLLED = 1 #!< (1)
+    PIN_MODE_ANALOGINPUT = 2 #!< (2)
+    PIN_MODE_SERVO = 3 #!< (3)
+    PIN_MODE_THROUGHPUT_CONSUMER = 4 #!< (4)
+    PIN_MODE_QUADRATUREENCODER = 5 #!< (5)
+    PIN_MODE_WATCHDOG = 7 #!< (7)
+    PIN_MODE_PROTECTED_OUTPUT = 8 #!< (8)
+    PIN_MODE_DEBOUNCE = 10 #!< (10)
+    PIN_MODE_TM1637 = 11 #!< (11)
+    PIN_MODE_WS2812 = 12 #!< (12)
+    PIN_MODE_SW_UART = 13 #!< (13)
+    PIN_MODE_INPUT_PROCESSOR = 14 #!< (14)
+    PIN_MODE_MATRIX_KEYPAD = 15 #!< (15)
+    PIN_MODE_PWM = 16 #!< (16)
+    PIN_MODE_UART_RX_TX = 17 #!< (17)  
+    PIN_MODE_PULSETIMER = 18 #!< (18)
+    PIN_MODE_FRAME_TIMER = 21 #!< (21)
+    PIN_MODE_SW18AB_CAPTOUCH = 22 #!< (22)
+    PIN_MODE_UART1_RX_TX = 23 #!< (23)
+    PIN_MODE_RESISTANCEINPUT = 24 #!< (24)
+    PIN_MODE_PULSE_ON_CHANGE = 25 #!< (25)
+    PIN_MODE_HS_SERVO = 26 #!< (26)
+    PIN_MODE_ULTRASONIC_DISTANCE = 27 #!< (27)
+    PIN_MODE_LIQUIDCRYSTAL = 28 #!< (28)
+    PIN_MODE_HS_CLOCK = 29 #! < (29)
+    PIN_MODE_HS_COUNTER = 30 #!< (30)
+    PIN_MODE_VGA = 31 #!<(31)
+    PIN_MODE_PS2KEYBOARD = 32 #!<(32)
+    PIN_MODE_UNKNOWN = 255 #!< (0xFF)
 
 
 """! \brief Class for a Serial Wombat chip.  Each Serial Wombat chip on a project should have its own instance.
@@ -1079,6 +1083,78 @@ class SerialWombatChip:
                 else:
                     return (data)
         return data 
+
+
+"""!
+	@brief A class which tunes the oscillator on a Serial Wombat 18AB chip
+	
+	This class is designed to be called periodically in the program main loop.  It compares
+	the 1mS execution frame count to the millis() funciton provided by the host.  When
+	at least 10 seconds of execution have occured the class compares the counts and
+	issues a command to tune the Serial Wombat Chip's oscillator slightly slower or faster.
+	This can reduce the error in the Serial Wombat's 32MHz nominal clock to less than +/- 0.1%
+	vs. the +/- 1.5% limit in the datasheet.   Simply call update() periodically and the class
+	will take care of the rest.  Allow up to 10 calls at least 10 seconds apart each to reach
+	optimal timing.
+	See the example sketch for an example.
+"""
+class SerialWombat18ABOscillatorTuner:
+    #{
+    #private:
+    """!
+    @brief Class constructor for SerialWombat18OscillatorTuner
+    @param serialWombat The Serial Wombat chip on which the Oscillator will be tuned;
+    """
+    def __init__(self,serial_wombat):
+        self._sw = serial_wombat
+        self._lastMillis = 0
+        self._lastFrames = 0
+    #public:
+    """!
+    @brief   Call periodically to tune the SW18AB oscillator to reported millis
+    """
+    def update(self):   
+        m = millis()
+        if (self._lastMillis == 0):
+            self._lastMillis = m
+            frames = self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_MSW)
+            frameslsb = self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_LSW)
+            if (frames != self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_MSW)):
+                frameslsb = self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_LSW)
+                frames = self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_MSW)
+            frames <<= 16
+            frames += frameslsb
+            self._lastFrames = frames
+        elif ((m - self._lastMillis) < 10000):
+            pass
+        elif (m < self._lastMillis):
+            #Has it been 47 days already?
+            self._lastMillis = 0
+        else:
+            diff = m - self._lastMillis
+
+            frames = self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_MSW)
+            frameslsb =self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_LSW)
+            
+            if (frames != self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_MSW)):
+                frameslsb = self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_LSW)
+                frames = self._sw.readPublicData(SerialWombatDataSource.SW_DATA_SOURCE_FRAMES_RUN_MSW)
+            frames <<= 16
+            frames += frameslsb
+            framesDif = frames - self._lastFrames
+
+            if (diff > framesDif ):
+                # Running  slow
+                tx = bytearray([ SerialWombatCommands.COMMAND_ADJUST_FREQUENCY]) + SW_LE16(1) +SW_LE16(0) + bytearray([0x55,0x55,0x55])
+                result,rx = self._sw.sendPacket(tx)         
+
+            elif (diff < framesDif):
+                 # Running  sFast
+                tx = bytearray([ SerialWombatCommands.COMMAND_ADJUST_FREQUENCY]) + SW_LE16(0) +SW_LE16(1) + bytearray([0x55,0x55,0x55])
+                result,rx = self._sw.sendPacket(tx)         
+
+            self._lastMillis = m
+            self._lastFrames = frames
 
 """
 End of cross platform code synchronization.  Random string to help the compare tool sync lines:
