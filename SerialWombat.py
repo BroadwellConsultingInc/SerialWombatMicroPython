@@ -231,6 +231,7 @@ class SerialWombatPinMode_t():
     PIN_MODE_SERVO = 3 #!< (3)
     PIN_MODE_THROUGHPUT_CONSUMER = 4 #!< (4)
     PIN_MODE_QUADRATUREENCODER = 5 #!< (5)
+    PIN_MODE_HBRIDGE = 6 #!< (6)
     PIN_MODE_WATCHDOG = 7 #!< (7)
     PIN_MODE_PROTECTED_OUTPUT = 8 #!< (8)
     PIN_MODE_DEBOUNCE = 10 #!< (10)
@@ -254,6 +255,7 @@ class SerialWombatPinMode_t():
     PIN_MODE_HS_COUNTER = 30 #!< (30)
     PIN_MODE_VGA = 31 #!<(31)
     PIN_MODE_PS2KEYBOARD = 32 #!<(32)
+    PIN_MODE_QUEUED_OUTPUT = 34 #!< (34)
     PIN_MODE_UNKNOWN = 255 #!< (0xFF)
 
 

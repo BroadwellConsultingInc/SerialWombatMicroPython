@@ -163,7 +163,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 			11]) + SW_LE16(constant) + bytearray([0X55,0X55])
 		result,rx = self._pisw.sendPacket(tx)
 
-		return(result);
+		return(result)
 
 	"""!
 	@brief Set a number of samples to average for each update of the downstream signal
@@ -183,7 +183,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 
 		result,rx = self._pisw.sendPacket(tx)
 
-		return(result);
+		return(result)
 
 
 	"""!
@@ -205,7 +205,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 
 		result,rx = self._pisw.sendPacket(tx)
 
-		return(result);
+		return(result)
 
 	"""!
 	@brief Sets up the queueing feature for this self._pin mode.  Queue must have been initialized prior to this queue
@@ -245,7 +245,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 
 		result,rx = self._pisw.sendPacket(tx)
 
-		return(result);
+		return(result)
 
 	"""!
 	@brief Scale incoming values to a range of 0 to 65535
@@ -300,7 +300,72 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 			8]) + SW_LE32(b)
 		result,rx = self._pisw.sendPacket(tx2)
 
-		return(result);
+		return(result)
+
+	"""!
+	@brief Sort incoming data into one of 5 ranges, and integrate based on linear interpolation in those ranges.
+
+	This funciton is designed to allow a binary or analog input to proportionally increment or decrement a value, such as allowing a joystick to control the position of a servo by changing it over time proportional to the position of the stick.	
+
+	@return Returns a negative value if the configuration caused an error.
+
+	"""
+
+	def configureIntegrator(self, negativeMaxIndex, #!< Values more negative than this will decrement the output value by maxIncrement per sample.
+				negativeMidIndex, #!< Values more negative than this will be linearly scaled with negativeMaxIndex, maxIncrement and midIncrement.
+						negativeDeadZone, #!< Values between negativeDeadZone and positiveDeadZone will not affect the output value.  Values between negativeDeadZone and negativeMidIndex will be scaled linearly based on 0 and midIncrement
+				positiveDeadZone, #!< Values between negativeDeadZone and positiveDeadZone will not affect the output value.  Values between positiveDeadZone and positiveMidIndex will be scaled linearly based on 0 and midIncrement
+				positiveMidIndex,#!< Values more positive than this will nearly increment the value scaled with negativeMaxIndex, maxIncrement and midIncrement.
+						positiveMaxIndex,#!< Values more positive than this will increment the output value by maxIncrement per sample. 
+				midIncrement,  #!< forms a line for scaling between 0 and midIncrement for values between negative or positive deadzone and negative or positive MidIndex
+				maxIncrement,  #!< forms a line for scaling between midIncrement and maxIncrement for values between negative or positive midIncrement and negative or positive maxIncrement
+				initialValue) : #!< intial integrator value
+			
+		tx = bytearray( [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+			self._pin,
+			self._swPinModeNumber,
+				12]) +  SW_LE16(negativeMaxIndex) +  SW_LE16(negativeMidIndex)
+                
+		result,rx  = self._pisw.sendPacket(tx)
+
+		if (result < 0):
+			return (result)
+
+		tx = bytearray( [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		self._pin,
+		self._swPinModeNumber,
+			13]) +                 SW_LE16(negativeDeadZone) +                 SW_LE16(positiveDeadZone)
+			
+		result,rx = self._pisw.sendPacket(tx)
+
+		if (result < 0):
+			return (result)
+		tx = bytearray([SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		self._pin,
+		self._swPinModeNumber,
+			14]) +                 SW_LE16(positiveMidIndex) +           SW_LE16(positiveMaxIndex)
+
+		result,rx = self._pisw.sendPacket(tx)
+
+		if (result < 0):
+				return (result)
+
+		tx = bytearray( [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		self._pin,
+		self._swPinModeNumber,
+                15]) +  SW_LE16(initialValue) + bytearray([ 0,0 ])
+		result,rx = self._pisw.sendPacket(tx)
+		if (result < 0):
+			return (result)
+                
+		tx = bytearray( [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_INPUTPROCESS,
+		self._pin,
+		self._swPinModeNumber,
+                16]) +   SW_LE16(midIncrement) +                 SW_LE16(maxIncrement)
+                
+		result,rx = self._pisw.sendPacket(tx)
+
+		return (result)
 
 	"""!
 	@brief Enables or disables all input processing functions
@@ -315,7 +380,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 			0x55,0x55,0x55]
 
 		result,rx = self._pisw.sendPacket(tx)
-		return(result);
+		return(result)
 
 	"""!
 	@brief Retreive the maximum public data output  value since the last call with reset= True
@@ -359,7 +424,7 @@ class SerialWombatAbstractProcessedInput (SerialWombatPin.SerialWombatPin):
 		
 		result,rx = self._pisw.sendPacket(tx)
 		if (result < 0):
-			return (0);
+			return (0)
 		return(rx[4] + 256 * rx[5])
 
 	"""!

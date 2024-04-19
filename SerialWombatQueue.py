@@ -110,6 +110,40 @@ class SerialWombatQueue:
             if ((rx[4] + 256 * rx[5]) > 0):
                 return(rx[3])
         return (-1)
+    """!
+    @brief Write an unsigned word to the Serial Wombat Queue
+    @param data  Word to write
+    @return Number of bytes written
+    """
+    def writeWord(self, data):
+        if (self.availableForWrite() < 2):
+            return 0
+        tx = bytearray( [0x91] ) + SW_LE16(self.startIndex) + bytearray([1]) + SW_LE16(data) + bytearray([0x55,0x55])
+        sendResult,rx = self._sw.sendPacket(tx)
+        if (sendResult >= 0):
+                return(rx[3])
+        return (0)
+
+    """!
+    @brief Write unsigned words to the Serial Wombat Queue
+    @param buffer  An array of uint16_t words to send
+    @param size the number of words (not bytes) to send
+    @return the number of words sent
+    ///
+    This function queries the Serial Wombat Queue
+    buffer space, and sends words as buffer space is avaialble.
+    If avaialable buffer space is not sufficient to send the entire
+    array then the function will block and continue trying until the
+    entire message has been sent to the Serial Wombat  queue.
+    """
+
+    def writeBufferWord(self,buffer):
+        data = bytearray()
+        for x in buffer:
+             data += bytearray([x & 0xFF,(x>>8) & 0xFF]);
+        return self.writeBuffer(buffer,len(data) )
+
+	
 
     """!
     @brief Write a byte to the Serial Wombat Queue
@@ -202,7 +236,6 @@ class SerialWombatQueue:
 
     """!
     @brief Reads a specified number of bytes from the Serial Wombat Queue
-    @param buffer  An array into which to put received bytes
     @param length  The maximum number of bytes to be received
     @return the number of bytes written to buffer
     
@@ -234,10 +267,10 @@ class SerialWombatQueue:
                                 buffer+= bytearray( rx[2 + i])
                                 bytesRead +=1
                         else:
-                            return (bytesRead)  
+                            return (buffer)  
             if (millis() > startTime + self._timeout):
-                return(bytesRead)
-        return bytesRead
+                return(buffer)
+        return buffer
 
 
 
@@ -245,5 +278,43 @@ class SerialWombatQueue:
         self._timeout = timeout_mS
 
     #TODO add copy interface
+	
+    """!
+    @brief Reads a specified number of unsigned 16 bit words from the Serial Wombat Queue
+    @param length  The maximum number of words (not bytes) to be received
+    @return Array of words
 
+    This function will read bytes from the Serial Wombat Queue into buffer.
+    If 'length' characters are not available to read then the value returned
+    will be less than length.
+    """ 
+    def readUInt16(self,length):
+        bytesAvailable = 0
+        startTime = millis()
+        buffer = bytearray()
+        tx = bytearray( [0x94])+ SW_LE16(self.startIndex)+ bytearray([0x55,0x55,0x55,0x55,0x55])
+        sendResult,rx = self._sw.sendPacket(rx)
+        if (sendResult >= 0):
+                bytesAvailable = (rx[4] + 256 * rx[5])
+
+        wordsAvaialble = bytesAvailable // 2
+        if (wordsAvaialble < length):
+                length = wordsAvaialble
+        wordsRead = 0
+        while (wordsRead < length):
+            bytesToRead = (length - wordsRead) * 2
+            if (bytesToRead > 6):
+                bytesToRead = 6
+            tx = bytearray([ 0x93]+SW_LE16(self.startIndex)+ bytearray[bytesToRead,0x55,0x55,0x55,0x55 ])
+            sendResult,rx = self._sw.sendPacket(tx)
+            if (sendResult >= 0):
+                    for i  in range( rx[1] / 2):
+                        if (wordsRead < length):
+                                buffer+= bytearray( rx[2 + i * 2] + rx[2 + i * 2 + 1] * 256)
+                                wordsRead +=1
+                        else:
+                            return (buffer)  
+            if (millis() > startTime + self._timeout):
+                return(buffer)
+        return buffer
 	

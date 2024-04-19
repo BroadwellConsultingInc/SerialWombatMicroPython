@@ -121,7 +121,7 @@ class SerialWombatHSCounter ( SerialWombatAbstractProcessedInput.SerialWombatAbs
 		return(returnval)
 
 	def readFrequency(self):
-		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE1,
+		tx = [ SerialWombat.SerialWombatCommands.CONFIGURE_PIN_MODE2,
 		self._pin,
 		self._pinMode,
 		0x55,

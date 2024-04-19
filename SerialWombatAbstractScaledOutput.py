@@ -1,5 +1,5 @@
 """
-Copyright 2021 Broadwell Consulting Inc.
+Copyright 2023-2024 Broadwell Consulting Inc.
 
 "Serial Wombat" is a registered trademark of Broadwell Consulting Inc. in
 the United States.  See SerialWombat.com for usage guidance.
@@ -414,16 +414,133 @@ class SerialWombatAbstractScaledOutput(SerialWombatPin.SerialWombatPin):
             0x55, 0x55,0x55,0x55,
         ]
         result,rx = self._asosw.sendPacket(tx)
-        if (result < 0):
-            return(result)
-
-        result,rx = self._asosw.sendPacket(tx)
         if (result >= 0):
             return(rx[4] + rx[5] * 256)
+        else:
+            return 0
+
+    def writeScalingTargetValueResetIntegrator(self, target):
+
+        tx = bytearray( [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+            self._pin,
+            self._pinMode,
+        110]) + SW_LE16(target) + bytearray([0x55,0x55]) # Write target Value and Reset Integrator
+        result,rx = self._asosw.sendPacket(tx)
+        return result
+	
+    def PIDGetLastError(self):
+
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+            self._pin,
+            self._pinMode,
+        103, # Get Last Error
+        0x55, 0x55,0x55,0x55,
+        ]
+        result,rx = self._asosw.sendPacket(tx)
+        if (result >= 0):
+            return(int.from_bytes( rx[4:8], byteorder='little', signed=True ))
         else:
             return 0
 
 
 
 
+    def PIDGetLastIntegrator(self):
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+            self._pin,
+            self._pinMode,
+        104, # Get Last Integrator
+        0x55, 0x55,0x55,0x55,
+        ]
+        result,rx = self._asosw.sendPacket(tx)
+        if (result >= 0):
+            return(int.from_bytes( rx[4:8], byteorder='little', signed=True ))
+        else:
+            return 0
 
+    def PIDGetLastIntegratorEffort(self):
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+            self._pin,
+            self._pinMode,
+        105, # Get Last Integrator Effort
+        0x55, 0x55,0x55,0x55,
+        ]
+        result,rx = self._asosw.sendPacket(tx)
+        if (result >= 0):
+            return(int.from_bytes( rx[4:8], byteorder='little', signed=True ))
+        else:
+            return 0
+
+    def PIDGetLastProportionalEffort(self):
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+            self._pin,
+            self._pinMode,
+        106, # Get Last Proportional Effort
+        0x55, 0x55,0x55,0x55,
+        ]
+        result,rx = self._asosw.sendPacket(tx)
+        if (result >= 0):
+            return(int.from_bytes( rx[4:8], byteorder='little', signed=True ))
+        else:
+            return 0
+		
+
+    def PIDGetLastDerivativeEffort(self):
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+            self._pin,
+            self._pinMode,
+        107, # Get Last Derivative Effort
+        0x55, 0x55,0x55,0x55,
+        ]
+        result,rx = self._asosw.sendPacket(tx)
+        if (result >= 0):
+            return(int.from_bytes( rx[4:8], byteorder='little', signed=True ))
+        else:
+            return 0
+
+    def PIDGetLastEffort(self):
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+            self._pin,
+            self._pinMode,
+        108, # Get Last Total Effort
+        0x55, 0x55,0x55,0x55,
+        ]
+        result,rx = self._asosw.sendPacket(tx)
+        if (result >= 0):
+            return(int.from_bytes( rx[4:8], byteorder='little', signed=True ))
+        else:
+            return 0
+
+    def ReadLastTarget(self):
+        tx = [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+            self._pin,
+            self._pinMode,
+        105, # Get Last Target
+        0x55, 0x55,0x55,0x55,
+        ]
+        result,rx = self._asosw.sendPacket(tx)
+        if (result >= 0):
+            return(int.from_bytes( rx[4:6], byteorder='little', signed=False ))
+        else:
+            return 0
+
+    """!
+        @brief Set Up 2D Lookup Output Scaling
+
+        Configure 2d Lookup scaling based on an array of 16 bit unsigned numbers in user memory
+        at index IndexInUserMemory .  The first entry must be 0x0000 0xYYYY where YYYY is the output
+        when 0x0000 is the input.  The final entry must be 0xFFFF 0xZZZZ where ZZZZ is the output
+        when 0xFFFF is the input.  Any number of additional point pairs can come between 0x0000 and 0xFFFF.
+        Point pairs must be in assending order by input.
+
+        @return Returns a negative error code if configuration generated an error.
+    """
+    def Enable2DLookupOutputScaling(self, 
+                                    IndexInUserMemory #< Index in user memory where 2d lookup table is located
+                                    ):
+        tx = bytearray( [ SerialWombatCommands.CONFIGURE_PIN_OUTPUTSCALE,
+            self._pin,
+            self._pinMode,
+        10]) + SW_LE16(IndexInUserMemory) + bytearray([0x55,0x55]) # 10 = Set 2D Lookup Index 
+        result,rx = self._asosw.sendPacket(tx)
+        return result

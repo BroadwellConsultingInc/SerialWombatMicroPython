@@ -1,6 +1,6 @@
 #pragma once
 """
-Copyright 2020-2021 Broadwell Consulting Inc.
+Copyright 2023-2024 Broadwell Consulting Inc.
 
 "Serial Wombat" is a registered trademark of Broadwell Consulting Inc. in
 the United States.  See SerialWombat.com for usage guidance.
@@ -103,4 +103,42 @@ class SerialWombatUltrasonicDistanceSensor ( SerialWombatAbstractProcessedInput.
 		
 		result,rx = self._sw.sendPacket(tx)
 		return(result)
+
+	"""	
+
+	@brief Configure a Servo sweep of Ultrasonic Distance Sensor
+	"""
+	
+	def configureServoSweep(self, servoPin, memoryIndex, servoPositions_, servoIncrement,  reverse = False,   servoMoveDelay = 100,  servoReturnDelay = 1000):
+			tx = [ 203, self._pin, self._pinMode, servoPin,memoryIndex & 0xFF, memoryIndex >>8,
+				servoPositions_ & 0xFF,servoPositions_ >>8]
+			result,rx = self._sw.sendPacket(tx)
+			if (result < 0):  
+				return result
+			tx = [204, self._pin, self._pinMode, servoIncrement & 0xFF, servoIncrement >> 8,
+				0x55,0x55, reverse]
+			result,rx = _sw.sendPacket(tx)
+			if (result < 0) :
+				return result 
+				tx = [205, _pin, _pinMode,  (servoMoveDelay & 0xFF), (servoMoveDelay >> 8),
+				servoReturnDelay & 0xFF,servoReturnDelay >>8, 0x55]
+			result,rx = self._sw.sendPacket(tx)
+			if (result < 0): 
+					return result 
+			self.servoMemoryIndex = memoryIndex
+			self.servoPositions = servoPositions_
+			return 0
+	def enableServoSweep(self, enable):
+		tx = [206, self._pin, self._pinMode,  enable ,0x55,0x55,0x55, 0x55]
+		result,rx = self._sw.sendPacket(tx)
+		return result
+
+	def readServoSweepEntry(self, servoSweepEntry):
+		b = self._sw.readUserBuffer(self.servoMemoryIndex + 2 * servoSweepEntry,  2)
+		return (()(b[0] + 256 * b[1]))
+
+
+	def readServoSweepEntries(self, entries,  count):
+
+		return self._sw.readUserBuffer(self.servoMemoryIndex, 2 * count)
 
